@@ -13,38 +13,13 @@
     <div class="logo">HighTier<span>Values</span></div>
 
     <nav class="nav">
-      <a href="#" class="nav-link active">Pets</a>
+      <a href="index.html" class="nav-link active">Pets</a>
       <a href="#trade" class="nav-link">Trade Calc</a>
 
-      <!-- Simple Email/Username/Password Login -->
-      <div id="authArea" style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-left:8px;">
-
-        <!-- Logged OUT -->
-        <div id="authLoggedOut" style="display:flex;align-items:center;gap:4px;flex-wrap:wrap;">
-          <input id="authEmail" type="email" placeholder="Email" 
-            style="max-width:150px;font-size:0.75rem;padding:4px;">
-          <input id="authUsername" type="text" placeholder="Username" 
-            style="max-width:120px;font-size:0.75rem;padding:4px;">
-          <input id="authPassword" type="password" placeholder="Password" 
-            style="max-width:120px;font-size:0.75rem;padding:4px;">
-
-          <button id="signUpBtn" class="btn-secondary" type="button" style="font-size:0.75rem;">
-            Sign up
-          </button>
-
-          <button id="loginBtn" class="btn-primary" type="button" style="font-size:0.75rem;">
-            Log in
-          </button>
-        </div>
-
-        <!-- Logged IN -->
-        <div id="authLoggedIn" style="display:none;align-items:center;gap:6px;">
-          <span id="welcomeText" style="font-size:0.8rem;"></span>
-          <button id="logoutBtn" class="btn-secondary" type="button" style="font-size:0.75rem;">
-            Log out
-          </button>
-        </div>
-
+      <!-- AUTH BUTTONS -->
+      <div id="authButtons" style="display:flex; gap:8px; margin-left:10px;">
+        <a href="signup.html" class="btn-primary" style="padding:6px 12px;">Sign Up</a>
+        <a href="login.html" class="btn-secondary" style="padding:6px 12px;">Log In</a>
       </div>
     </nav>
   </header>
@@ -98,6 +73,5 @@
 
   <!-- Scripts -->
   <script src="app.js"></script>
-  <script src="auth-local.js"></script>
 </body>
 </html>
