@@ -2,91 +2,102 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>High Tier Adopt Me Values</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link rel="stylesheet" href="style.css" />
 </head>
+
 <body>
+  <!-- Top Navigation -->
   <header class="topbar">
     <div class="logo">HighTier<span>Values</span></div>
+
     <nav class="nav">
       <a href="#" class="nav-link active">Pets</a>
       <a href="#trade" class="nav-link">Trade Calc</a>
+
+      <!-- Simple Email/Username/Password Login -->
+      <div id="authArea" style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-left:8px;">
+
+        <!-- Logged OUT -->
+        <div id="authLoggedOut" style="display:flex;align-items:center;gap:4px;flex-wrap:wrap;">
+          <input id="authEmail" type="email" placeholder="Email" 
+            style="max-width:150px;font-size:0.75rem;padding:4px;">
+          <input id="authUsername" type="text" placeholder="Username" 
+            style="max-width:120px;font-size:0.75rem;padding:4px;">
+          <input id="authPassword" type="password" placeholder="Password" 
+            style="max-width:120px;font-size:0.75rem;padding:4px;">
+
+          <button id="signUpBtn" class="btn-secondary" type="button" style="font-size:0.75rem;">
+            Sign up
+          </button>
+
+          <button id="loginBtn" class="btn-primary" type="button" style="font-size:0.75rem;">
+            Log in
+          </button>
+        </div>
+
+        <!-- Logged IN -->
+        <div id="authLoggedIn" style="display:none;align-items:center;gap:6px;">
+          <span id="welcomeText" style="font-size:0.8rem;"></span>
+          <button id="logoutBtn" class="btn-secondary" type="button" style="font-size:0.75rem;">
+            Log out
+          </button>
+        </div>
+
+      </div>
     </nav>
   </header>
 
-  <section class="hero">
-    <h1>High Tier Adopt Me Values</h1>
-    <p>Only god-tier & very high tier pets. Clean values. No junk.</p>
-  </section>
+  <!-- Main Content -->
+  <main>
+    <section class="filters">
+      <input id="searchInput" type="text" placeholder="Search pets..." class="search-box" />
 
-  <section class="controls">
-    <div class="control-row">
-      <div class="field">
-        <label for="searchInput">Search</label>
-        <input id="searchInput" type="text" placeholder="Shadow Dragon, Giraffe..." />
-      </div>
+      <select id="tierFilter" class="filter-select">
+        <option value="">All Tiers</option>
+      </select>
 
-      <div class="field">
-        <label for="tierFilter">Tier</label>
-        <select id="tierFilter">
-          <option value="">All tiers</option>
-        </select>
-      </div>
+      <select id="rarityFilter" class="filter-select">
+        <option value="">All Rarities</option>
+      </select>
+    </section>
 
-      <div class="field">
-        <label for="rarityFilter">Rarity</label>
-        <select id="rarityFilter">
-          <option value="">All rarities</option>
-        </select>
-      </div>
-    </div>
+    <section id="tierTabs" class="tier-tabs"></section>
 
-    <div class="tier-tabs" id="tierTabs"></div>
-  </section>
-
-  <main class="main">
-    <section id="petGrid" class="grid"></section>
+    <section id="petGrid" class="pet-grid"></section>
   </main>
 
+  <!-- Modal -->
+  <div id="petModal" class="modal hidden">
+    <div class="modal-content" id="modalContent"></div>
+    <button id="closeModal" class="modal-close">×</button>
+  </div>
+
+  <!-- Trade Calculator -->
   <section id="trade" class="trade-section">
     <h2>Trade Calculator</h2>
 
-    <div class="trade-layout">
-      <div class="trade-column">
-        <h3>Your Offer</h3>
+    <div class="trade-area">
+      <div>
+        <h3>You Give</h3>
         <div id="giveList" class="trade-list"></div>
         <button id="clearGive" class="btn-secondary">Clear</button>
       </div>
 
-      <div class="trade-column">
-        <h3>Their Offer</h3>
+      <div>
+        <h3>You Get</h3>
         <div id="getList" class="trade-list"></div>
         <button id="clearGet" class="btn-secondary">Clear</button>
       </div>
     </div>
 
-    <div class="trade-actions">
-      <button id="evaluateBtn" class="btn-primary">Evaluate Trade</button>
-      <p id="tradeResult" class="trade-result"></p>
-    </div>
-
-    <p class="trade-hint">
-      Tip: click any pet card and pick which side it goes on.
-    </p>
+    <button id="evaluateBtn" class="btn-primary">Evaluate Trade</button>
+    <p id="tradeResult" class="trade-result"></p>
   </section>
 
-  <div id="petModal" class="modal hidden">
-    <div class="modal-inner">
-      <button id="closeModal" class="modal-close">×</button>
-      <div id="modalContent"></div>
-    </div>
-  </div>
-
-  <footer class="footer">
-    <p>Made by you • High tier only • Not affiliated with Adopt Me</p>
-  </footer>
-
+  <!-- Scripts -->
   <script src="app.js"></script>
+  <script src="auth-local.js"></script>
 </body>
 </html>
