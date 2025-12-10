@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Your Account</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <div class="auth-container">
+    <h2>Welcome!</h2>
+
+    <p id="welcomeUser"></p>
+
+    <button id="logoutBtn" class="btn-secondary">Log Out</button>
+    <br><br>
+    <a href="index.html">Return to Homepage</a>
+  </div>
+
+  <script>
+    const user = JSON.parse(localStorage.getItem("currentUser"));
+
+    if (!user) {
+      window.location.href = "login.html";
+    }
+
+    document.getElementById("welcomeUser").textContent =
+      "Logged in as: " + user.username + " (" + user.email + ")";
+
+    document.getElementById("logoutBtn").addEventListener("click", () => {
+      localStorage.removeItem("currentUser");
+      window.location.href = "login.html";
+    });
+  </script>
+
+</body>
+</html>
