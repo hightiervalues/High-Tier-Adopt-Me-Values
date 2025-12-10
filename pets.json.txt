@@ -1,0 +1,155 @@
+[
+  {
+    "id": "shadow_dragon",
+    "name": "Shadow Dragon",
+    "tier": "God Tier",
+    "rarity": "Legendary",
+    "baseValue": 800,
+    "demand": 10,
+    "icon": "shadow_dragon.png"
+  },
+  {
+    "id": "bat_dragon",
+    "name": "Bat Dragon",
+    "tier": "God Tier",
+    "rarity": "Legendary",
+    "baseValue": 750,
+    "demand": 10,
+    "icon": "bat_dragon.png"
+  },
+  {
+    "id": "frost_dragon",
+    "name": "Frost Dragon",
+    "tier": "God Tier",
+    "rarity": "Legendary",
+    "baseValue": 700,
+    "demand": 9,
+    "icon": "frost_dragon.png"
+  },
+  {
+    "id": "giraffe",
+    "name": "Giraffe",
+    "tier": "God Tier",
+    "rarity": "Legendary",
+    "baseValue": 680,
+    "demand": 9,
+    "icon": "giraffe.png"
+  },
+  {
+    "id": "crow",
+    "name": "Crow",
+    "tier": "Very High",
+    "rarity": "Legendary",
+    "baseValue": 520,
+    "demand": 9,
+    "icon": "crow.png"
+  },
+  {
+    "id": "owl",
+    "name": "Owl",
+    "tier": "Very High",
+    "rarity": "Legendary",
+    "baseValue": 540,
+    "demand": 9,
+    "icon": "owl.png"
+  },
+  {
+    "id": "parrot",
+    "name": "Parrot",
+    "tier": "Very High",
+    "rarity": "Legendary",
+    "baseValue": 560,
+    "demand": 9,
+    "icon": "parrot.png"
+  },
+  {
+    "id": "arctic_reindeer",
+    "name": "Arctic Reindeer",
+    "tier": "Very High",
+    "rarity": "Legendary",
+    "baseValue": 430,
+    "demand": 8,
+    "icon": "arctic_reindeer.png"
+  },
+  {
+    "id": "evil_unicorn",
+    "name": "Evil Unicorn",
+    "tier": "Very High",
+    "rarity": "Legendary",
+    "baseValue": 420,
+    "demand": 8,
+    "icon": "evil_unicorn.png"
+  },
+  {
+    "id": "frost_fury",
+    "name": "Frost Fury",
+    "tier": "Very High",
+    "rarity": "Legendary",
+    "baseValue": 380,
+    "demand": 8,
+    "icon": "frost_fury.png"
+  },
+  {
+    "id": "hedgehog",
+    "name": "Hedgehog",
+    "tier": "Very High",
+    "rarity": "Ultra-Rare",
+    "baseValue": 360,
+    "demand": 8,
+    "icon": "hedgehog.png"
+  },
+  {
+    "id": "dalmatian",
+    "name": "Dalmatian",
+    "tier": "High",
+    "rarity": "Ultra-Rare",
+    "baseValue": 300,
+    "demand": 7,
+    "icon": "dalmatian.png"
+  },
+  {
+    "id": "turtle",
+    "name": "Turtle",
+    "tier": "High",
+    "rarity": "Legendary",
+    "baseValue": 320,
+    "demand": 7,
+    "icon": "turtle.png"
+  },
+  {
+    "id": "kangaroo",
+    "name": "Kangaroo",
+    "tier": "High",
+    "rarity": "Legendary",
+    "baseValue": 290,
+    "demand": 7,
+    "icon": "kangaroo.png"
+  },
+  {
+    "id": "blue_dog",
+    "name": "Blue Dog",
+    "tier": "High",
+    "rarity": "Uncommon",
+    "baseValue": 260,
+    "demand": 7,
+    "icon": "blue_dog.png"
+  },
+  {
+    "id": "pink_cat",
+    "name": "Pink Cat",
+    "tier": "High",
+    "rarity": "Uncommon",
+    "baseValue": 240,
+    "demand": 7,
+    "icon": "pink_cat.png"
+  },
+  {
+    "id": "albino_monkey",
+    "name": "Albino Monkey",
+    "tier": "High",
+    "rarity": "Legendary",
+    "baseValue": 280,
+    "demand": 7,
+    "icon": "albino_monkey.png"
+  }
+]
