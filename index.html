@@ -7,7 +7,7 @@
   <link rel="stylesheet" href="style.css" />
 </head>
 
-<body>
+<body class="theme-light">
   <!-- Top Navigation (Elvebredd-style) -->
   <header class="topbar">
     <div class="top-left">
@@ -117,6 +117,34 @@
       </p>
     </div>
   </main>
+
+  <!-- THEME PICKER OVERLAY -->
+  <div id="themeOverlay" class="theme-overlay hidden">
+    <div class="theme-dialog">
+      <h1>Choose your style</h1>
+      <p>Select how you want the calculator to look.</p>
+
+      <div class="theme-options">
+        <button class="theme-card theme-card-light" data-theme="light">
+          <div class="theme-title">Light</div>
+          <div class="theme-preview preview-light"></div>
+          <div class="theme-desc">Soft beige, clean look.</div>
+        </button>
+
+        <button class="theme-card theme-card-silver" data-theme="silver">
+          <div class="theme-title">Silver</div>
+          <div class="theme-preview preview-silver"></div>
+          <div class="theme-desc">Cool grey & blue tones.</div>
+        </button>
+
+        <button class="theme-card theme-card-gold" data-theme="gold">
+          <div class="theme-title">Gold</div>
+          <div class="theme-preview preview-gold"></div>
+          <div class="theme-desc">Warm gold & orange.</div>
+        </button>
+      </div>
+    </div>
+  </div>
 
   <!-- Picker modal -->
   <div id="pickerModal" class="modal hidden">
