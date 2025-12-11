@@ -8,112 +8,112 @@
 </head>
 
 <body>
-  <!-- Top Navigation -->
+  <!-- Top Navigation similar to Elvebredd -->
   <header class="topbar">
+    <div class="top-left">
+      <button class="menu-icon">☰</button>
+      <span class="game-label">Adopt Me</span>
+    </div>
+
     <div class="logo">HighTier<span>Values</span></div>
 
     <nav class="nav">
-      <a href="index.html" class="nav-link active">Trade Calc</a>
-      <a href="signup.html" class="nav-link">Sign Up</a>
-      <a href="login.html" class="nav-link">Log In</a>
-      <a href="profile.html" class="nav-link">Profile</a>
+      <a href="#" class="nav-link">Trade Center</a>
+      <a href="index.html" class="nav-link active">Value Calculator</a>
+      <a href="login.html" class="nav-link sign-btn">Sign In</a>
     </nav>
   </header>
 
   <main class="trade-page">
-    <h1 class="page-title">Adopt Me High Tier Trade Calculator</h1>
-    <p class="page-subtitle">
-      Compare your offer vs their offer using Shark &amp; Frost values with FR, Neon, Mega and more.
-    </p>
-
-    <!-- Shark & Frost value strip -->
-    <div class="value-strip">
-      <div class="value-box">
-        <div class="value-label">Shark</div>
-        <div class="value-numbers">
-          <span class="value-side-label">You:</span>
-          <span id="yourSharkTotal">0</span>
-          <span class="value-separator">|</span>
-          <span class="value-side-label">Them:</span>
-          <span id="theirSharkTotal">0</span>
+    <div class="calc-shell">
+      <!-- Top result strip -->
+      <section class="summary-banner">
+        <div class="summary-side">
+          <div class="summary-number" id="summaryYour">0</div>
+          <div class="summary-label">YOUR OFFER</div>
         </div>
-      </div>
 
-      <div class="value-box">
-        <div class="value-label">Frost</div>
-        <div class="value-numbers">
-          <span class="value-side-label">You:</span>
-          <span id="yourFrostTotal">0</span>
-          <span class="value-separator">|</span>
-          <span class="value-side-label">Them:</span>
-          <span id="theirFrostTotal">0</span>
+        <div class="summary-center">
+          <div class="win-strip">
+            <span class="win-label">WIN</span>
+            <span class="win-label active">FAIR</span>
+            <span class="win-label">LOSE</span>
+          </div>
+          <div class="summary-divider">
+            <span>YOUR OFFER</span>
+            <span class="pipe">|</span>
+            <span>THEIR OFFER</span>
+          </div>
+          <div class="summary-bars">
+            <div class="bar your-bar"></div>
+            <div class="bar their-bar"></div>
+          </div>
         </div>
-      </div>
-    </div>
 
-    <!-- Offers -->
-    <div class="trade-columns">
-      <!-- Your Offer -->
-      <section class="offer">
-        <h2>Your offer</h2>
-        <div class="slot-grid" data-side="your">
-          <!-- 18 slots -->
-          <div class="offer-slot plus" data-index="0" data-side="your"></div>
-          <div class="offer-slot" data-index="1" data-side="your"></div>
-          <div class="offer-slot" data-index="2" data-side="your"></div>
-          <div class="offer-slot" data-index="3" data-side="your"></div>
-          <div class="offer-slot" data-index="4" data-side="your"></div>
-          <div class="offer-slot" data-index="5" data-side="your"></div>
-          <div class="offer-slot" data-index="6" data-side="your"></div>
-          <div class="offer-slot" data-index="7" data-side="your"></div>
-          <div class="offer-slot" data-index="8" data-side="your"></div>
-          <div class="offer-slot" data-index="9" data-side="your"></div>
-          <div class="offer-slot" data-index="10" data-side="your"></div>
-          <div class="offer-slot" data-index="11" data-side="your"></div>
-          <div class="offer-slot" data-index="12" data-side="your"></div>
-          <div class="offer-slot" data-index="13" data-side="your"></div>
-          <div class="offer-slot" data-index="14" data-side="your"></div>
-          <div class="offer-slot" data-index="15" data-side="your"></div>
-          <div class="offer-slot" data-index="16" data-side="your"></div>
-          <div class="offer-slot" data-index="17" data-side="your"></div>
+        <div class="summary-side">
+          <div class="summary-number" id="summaryTheir">0</div>
+          <div class="summary-label">THEIR OFFER</div>
         </div>
       </section>
 
-      <!-- Their Offer -->
-      <section class="offer">
-        <h2>Their offer</h2>
-        <div class="slot-grid" data-side="their">
-          <!-- 18 slots -->
-          <div class="offer-slot plus" data-index="0" data-side="their"></div>
-          <div class="offer-slot" data-index="1" data-side="their"></div>
-          <div class="offer-slot" data-index="2" data-side="their"></div>
-          <div class="offer-slot" data-index="3" data-side="their"></div>
-          <div class="offer-slot" data-index="4" data-side="their"></div>
-          <div class="offer-slot" data-index="5" data-side="their"></div>
-          <div class="offer-slot" data-index="6" data-side="their"></div>
-          <div class="offer-slot" data-index="7" data-side="their"></div>
-          <div class="offer-slot" data-index="8" data-side="their"></div>
-          <div class="offer-slot" data-index="9" data-side="their"></div>
-          <div class="offer-slot" data-index="10" data-side="their"></div>
-          <div class="offer-slot" data-index="11" data-side="their"></div>
-          <div class="offer-slot" data-index="12" data-side="their"></div>
-          <div class="offer-slot" data-index="13" data-side="their"></div>
-          <div class="offer-slot" data-index="14" data-side="their"></div>
-          <div class="offer-slot" data-index="15" data-side="their"></div>
-          <div class="offer-slot" data-index="16" data-side="their"></div>
-          <div class="offer-slot" data-index="17" data-side="their"></div>
+      <!-- Main board: two 3x3 grids + center value -->
+      <section class="board-card">
+        <div class="offer-grid-wrap">
+          <div class="offer-grid" data-side="your">
+            <div class="offer-slot plus" data-index="0" data-side="your"></div>
+            <div class="offer-slot" data-index="1" data-side="your"></div>
+            <div class="offer-slot" data-index="2" data-side="your"></div>
+            <div class="offer-slot" data-index="3" data-side="your"></div>
+            <div class="offer-slot" data-index="4" data-side="your"></div>
+            <div class="offer-slot" data-index="5" data-side="your"></div>
+            <div class="offer-slot" data-index="6" data-side="your"></div>
+            <div class="offer-slot" data-index="7" data-side="your"></div>
+            <div class="offer-slot" data-index="8" data-side="your"></div>
+          </div>
+        </div>
+
+        <div class="center-value">
+          <span id="centerValue">0</span>
+        </div>
+
+        <div class="offer-grid-wrap">
+          <div class="offer-grid" data-side="their">
+            <div class="offer-slot plus" data-index="0" data-side="their"></div>
+            <div class="offer-slot" data-index="1" data-side="their"></div>
+            <div class="offer-slot" data-index="2" data-side="their"></div>
+            <div class="offer-slot" data-index="3" data-side="their"></div>
+            <div class="offer-slot" data-index="4" data-side="their"></div>
+            <div class="offer-slot" data-index="5" data-side="their"></div>
+            <div class="offer-slot" data-index="6" data-side="their"></div>
+            <div class="offer-slot" data-index="7" data-side="their"></div>
+            <div class="offer-slot" data-index="8" data-side="their"></div>
+          </div>
         </div>
       </section>
-    </div>
 
-    <div class="trade-actions">
-      <button id="clearTrade" class="btn-secondary">Clear</button>
-      <button id="evaluateBtn" class="btn-primary">Evaluate Trade</button>
+      <!-- Shark/Frost toggle pill like at bottom of screenshot -->
+      <section class="mode-toggle">
+        <div class="mode-note">RECOMMENDED</div>
+        <div class="mode-pill">
+          <button class="mode-btn active" id="modeShark">Shark</button>
+          <button class="mode-btn" id="modeFrost">Frost</button>
+        </div>
+      </section>
+
+      <!-- Actions + result text (from your JS) -->
+      <div class="trade-actions">
+        <button id="clearTrade" class="btn-secondary">Clear</button>
+        <button id="evaluateBtn" class="btn-primary">Evaluate Trade</button>
+      </div>
+      <p id="tradeResult" class="trade-result"></p>
+
+      <p class="bottom-note">
+        Use this value calculator to compare Adopt Me trades. Add pets/items on each side and evaluate before trading in Roblox.
+      </p>
     </div>
-    <p id="tradeResult" class="trade-result"></p>
   </main>
 
-  <!-- Picker modal -->
+  <!-- Picker modal (unchanged logic, just styled) -->
   <div id="pickerModal" class="modal hidden">
     <div class="modal-content picker">
       <div class="picker-header">
