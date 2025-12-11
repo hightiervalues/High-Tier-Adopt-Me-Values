@@ -137,8 +137,8 @@ const VARIANT_LABEL = {
   m: "Mega"
 };
 
-// 1 Frost = 95 Sharks (base ratio)
-const FROST_TO_SHARK_RATIO = 95;
+// 1 Frost = 164 Sharks (base ratio)
+const FROST_TO_SHARK_RATIO = 164;
 
 // 18 slots each side
 const EMPTY_OFFER = () => Array(18).fill(null);
@@ -392,7 +392,7 @@ function initMenuAndFeedback() {
   const feedbackBtn = $("#feedbackSendBtn");
   const feedbackInput = $("#feedbackInput");
 
-  const OWNER_EMAIL = "youremail@example.com"; // TODO: replace with your email
+  const OWNER_EMAIL = "onedevgameshelp@gmail.com"; // TODO: replace with your email
 
   function openMenu() {
     if (!sideMenu || !overlay) return;
@@ -467,3 +467,4 @@ document.addEventListener("DOMContentLoaded", () => {
   renderOffers();
   updateTotalsUI(0, 0);
 });
+
