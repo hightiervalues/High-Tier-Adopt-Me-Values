@@ -1,9 +1,9 @@
 // =========================
-// SIMPLE DATA SETUP
+// ITEM DATA (Shark values)
 // =========================
 
-// Each item has category + values per variant.
-// You can add more animals/items and more categories later.
+// value.* = shark value (1 = 1 Shark)
+// Frost values are derived in UI from shark totals.
 const ITEMS = [
   {
     id: "shadow_dragon",
@@ -125,9 +125,7 @@ const ITEMS = [
     value: { np: 370, r: 380, f: 390, fr: 405, n: 760, m: 1180 }
   }
 
-  // Later you can add:
-  // { id: "something_stroller", category: "strollers", ... }
-  // { id: "pizza", category: "food", ... } etc.
+  // Later: add strollers / food / pet wear / vehicles with category: "strollers", etc.
 ];
 
 const VARIANT_LABEL = {
@@ -139,7 +137,10 @@ const VARIANT_LABEL = {
   m: "Mega"
 };
 
-// Arrays of 18 slots per side
+// 1 Frost = 95 Sharks (like Elvebredd)
+const FROST_TO_SHARK_RATIO = 95;
+
+// 18 slots each side
 const EMPTY_OFFER = () => Array(18).fill(null);
 
 const state = {
@@ -243,7 +244,6 @@ function renderSlot(slot, entry) {
   slot.classList.remove("filled");
 
   if (!entry) {
-    // If first slot and has class plus, show +
     if (slot.classList.contains("plus")) {
       const plusDiv = document.createElement("div");
       plusDiv.className = "slot-plus";
@@ -288,26 +288,39 @@ function handleAddToOffer() {
   };
 
   renderOffers();
+  calculateAndUpdateTotals();
   closePicker();
 }
 
-function clearTrade() {
-  state.your = EMPTY_OFFER();
-  state.their = EMPTY_OFFER();
-  renderOffers();
-  $("#tradeResult").textContent = "";
+// ----------------------------
+// TOTALS (Shark + Frost)
+// ----------------------------
+
+function updateTotalsUI(yourShark, theirShark) {
+  const yourFrost = yourShark / FROST_TO_SHARK_RATIO;
+  const theirFrost = theirShark / FROST_TO_SHARK_RATIO;
+
+  const ys = document.getElementById("yourSharkTotal");
+  const ts = document.getElementById("theirSharkTotal");
+  const yf = document.getElementById("yourFrostTotal");
+  const tf = document.getElementById("theirFrostTotal");
+
+  if (ys) ys.textContent = yourShark.toFixed(2);
+  if (ts) ts.textContent = theirShark.toFixed(2);
+  if (yf) yf.textContent = yourFrost.toFixed(2);
+  if (tf) tf.textContent = theirFrost.toFixed(2);
 }
 
-function evaluateTrade() {
-  let yourTotal = 0;
-  let theirTotal = 0;
+function calculateTotals() {
+  let yourSharkTotal = 0;
+  let theirSharkTotal = 0;
 
   state.your.forEach(entry => {
     if (!entry) return;
     const item = ITEMS.find(i => i.id === entry.itemId);
     if (!item) return;
     const v = item.value[entry.variant] || 0;
-    yourTotal += v;
+    yourSharkTotal += v;
   });
 
   state.their.forEach(entry => {
@@ -315,20 +328,49 @@ function evaluateTrade() {
     const item = ITEMS.find(i => i.id === entry.itemId);
     if (!item) return;
     const v = item.value[entry.variant] || 0;
-    theirTotal += v;
+    theirSharkTotal += v;
   });
 
+  return { yourSharkTotal, theirSharkTotal };
+}
+
+function calculateAndUpdateTotals() {
+  const { yourSharkTotal, theirSharkTotal } = calculateTotals();
+  updateTotalsUI(yourSharkTotal, theirSharkTotal);
+  return { yourSharkTotal, theirSharkTotal };
+}
+
+// ----------------------------
+// CLEAR & EVALUATE
+// ----------------------------
+
+function clearTrade() {
+  state.your = EMPTY_OFFER();
+  state.their = EMPTY_OFFER();
+  renderOffers();
   const resultEl = $("#tradeResult");
-  if (yourTotal === 0 && theirTotal === 0) {
+  if (resultEl) resultEl.textContent = "";
+  updateTotalsUI(0, 0);
+}
+
+function evaluateTrade() {
+  const { yourSharkTotal, theirSharkTotal } = calculateAndUpdateTotals();
+
+  const resultEl = $("#tradeResult");
+  if (!resultEl) return;
+
+  if (yourSharkTotal === 0 && theirSharkTotal === 0) {
     resultEl.textContent = "Add some items to both offers to evaluate.";
     return;
   }
 
-  let message = `Your value: ${yourTotal} • Their value: ${theirTotal} – `;
+  let message =
+    `Your value: ${yourSharkTotal.toFixed(2)} sharks • ` +
+    `Their value: ${theirSharkTotal.toFixed(2)} sharks – `;
 
-  if (yourTotal > theirTotal + 30) {
+  if (yourSharkTotal > theirSharkTotal + 30) {
     message += "You are overpaying a lot. 🟥";
-  } else if (theirTotal > yourTotal + 30) {
+  } else if (theirSharkTotal > yourSharkTotal + 30) {
     message += "They are over. This looks like a win for you. 🟩";
   } else {
     message += "This is around fair. 🟨";
@@ -367,6 +409,7 @@ document.addEventListener("DOMContentLoaded", () => {
   $("#clearTrade").addEventListener("click", clearTrade);
   $("#evaluateBtn").addEventListener("click", evaluateTrade);
 
-  // First render
+  // First render + totals
   renderOffers();
+  updateTotalsUI(0, 0);
 });
