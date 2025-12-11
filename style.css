@@ -10,39 +10,18 @@ body {
   color: #f8fafc;
 }
 
-/* HEADER */
+/* HEADER – simple like before, no sidebar look */
 
 .topbar {
   position: sticky;
   top: 0;
-  z-index: 30;
+  z-index: 20;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 10px 14px;
+  padding: 12px 18px;
   background: linear-gradient(to right, #05060a, #101221);
   box-shadow: 0 6px 22px rgba(0, 0, 0, 0.6);
-}
-
-.left-header {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.menu-toggle {
-  border: none;
-  background: #171928;
-  color: #e5e7eb;
-  border-radius: 999px;
-  width: 32px;
-  height: 32px;
-  cursor: pointer;
-  font-size: 1rem;
-}
-
-.menu-toggle:hover {
-  background: #202338;
 }
 
 .logo {
@@ -74,113 +53,6 @@ body {
 .nav-link:hover {
   background: rgba(246, 196, 83, 0.12);
   color: #f8fafc;
-}
-
-/* SIDE MENU */
-
-.menu-overlay {
-  position: fixed;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.6);
-  opacity: 0;
-  pointer-events: none;
-  transition: 0.2s;
-  z-index: 25;
-}
-
-.menu-overlay.visible {
-  opacity: 1;
-  pointer-events: auto;
-}
-
-.side-menu {
-  position: fixed;
-  top: 0;
-  left: -260px;
-  width: 260px;
-  height: 100vh;
-  background: #0b0c16;
-  box-shadow: 6px 0 20px rgba(0, 0, 0, 0.7);
-  padding: 14px;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  z-index: 26;
-  transition: 0.2s ease-out;
-}
-
-.side-menu.open {
-  left: 0;
-}
-
-.side-menu-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.side-menu-header h2 {
-  font-size: 1.05rem;
-}
-
-.menu-close {
-  border: none;
-  background: transparent;
-  color: #e5e7eb;
-  font-size: 1.4rem;
-  cursor: pointer;
-}
-
-.side-menu-section {
-  margin-top: 8px;
-  border-top: 1px solid #1e2135;
-  padding-top: 8px;
-}
-
-.side-menu-section h3 {
-  font-size: 0.9rem;
-  margin-bottom: 4px;
-}
-
-.side-text {
-  font-size: 0.8rem;
-  color: #9ca3af;
-  margin-bottom: 6px;
-}
-
-.side-hint {
-  font-size: 0.7rem;
-  color: #6b7280;
-  margin-top: 4px;
-}
-
-.side-menu textarea {
-  width: 100%;
-  border-radius: 8px;
-  border: 1px solid #1e2135;
-  padding: 6px;
-  font-size: 0.8rem;
-  background: #101221;
-  color: #e5e7eb;
-}
-
-.social-list {
-  list-style: none;
-  margin-top: 4px;
-}
-
-.social-list li {
-  margin-bottom: 3px;
-}
-
-.social-list a {
-  font-size: 0.8rem;
-  color: #f6c453;
-  text-decoration: none;
-}
-
-.social-list a:hover {
-  text-decoration: underline;
 }
 
 /* MAIN TRADE PAGE */
@@ -247,7 +119,7 @@ body {
   color: #4b5563;
 }
 
-/* OFFERS */
+/* OFFERS (two boxes like before) */
 
 .trade-columns {
   display: flex;
@@ -357,11 +229,6 @@ body {
 
 .btn-secondary:hover {
   background: #181b2b;
-}
-
-.small-btn {
-  padding: 5px 11px;
-  font-size: 0.8rem;
 }
 
 .trade-actions {
@@ -499,7 +366,7 @@ body {
   gap: 8px;
 }
 
-/* AUTH PAGES (login, signup, profile) */
+/* AUTH PAGES (login, signup, profile) – new, but won’t change main layout */
 
 .auth-page {
   max-width: 700px;
