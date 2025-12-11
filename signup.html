@@ -1,66 +1,169 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Sign Up</title>
-  <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sign Up • High Tier Adopt Me Values</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
+  <header class="topbar">
+    <div class="left-header">
+      <button id="menuToggle" class="menu-toggle">☰</button>
+      <div class="logo">HighTier<span>Values</span></div>
+    </div>
 
-  <div class="auth-container">
-    <h2>Create Account</h2>
+    <nav class="nav">
+      <a href="index.html" class="nav-link">Trade Calc</a>
+      <a href="signup.html" class="nav-link active">Sign Up</a>
+      <a href="login.html" class="nav-link">Log In</a>
+      <a href="profile.html" class="nav-link">Profile</a>
+    </nav>
+  </header>
 
-    <input id="email" type="email" placeholder="Email">
-    <input id="username" type="text" placeholder="Username">
-    <input id="password" type="password" placeholder="Password">
+  <main class="auth-page">
+    <section class="auth-card">
+      <h1>Create your account</h1>
+      <p class="auth-subtitle">
+        Track your trades, customise your profile, and more.
+      </p>
 
-    <button id="createAccount" class="btn-primary">Create Account</button>
+      <form id="signupForm" class="auth-form">
+        <label>
+          Email
+          <input type="email" id="signupEmail" required placeholder="you@example.com" />
+        </label>
 
-    <p id="message"></p>
+        <label>
+          Username
+          <input type="text" id="signupUsername" required placeholder="Your display name" />
+        </label>
 
-    <a href="login.html">Already have an account? Log in</a>
-  </div>
+        <label>
+          Password
+          <input type="password" id="signupPassword" required minlength="4" placeholder="At least 4 characters" />
+        </label>
+
+        <label>
+          Confirm password
+          <input type="password" id="signupPasswordConfirm" required minlength="4" placeholder="Type it again" />
+        </label>
+
+        <button type="submit" class="btn-primary auth-btn">Sign Up</button>
+      </form>
+
+      <p class="auth-footer-text">
+        Already have an account?
+        <a href="login.html">Log in</a>
+      </p>
+
+      <p id="signupError" class="auth-error"></p>
+    </section>
+  </main>
+
+  <!-- simple sidebar toggle reuse -->
+  <div id="menuOverlay" class="menu-overlay"></div>
+  <aside id="sideMenu" class="side-menu">
+    <div class="side-menu-header">
+      <h2>Menu</h2>
+      <button id="menuClose" class="menu-close">×</button>
+    </div>
+    <div class="side-menu-section">
+      <p class="side-text">Use the main page to calculate trades.</p>
+    </div>
+  </aside>
 
   <script>
-    document.getElementById("createAccount").addEventListener("click", () => {
-      const emailEl = document.getElementById("email");
-      const usernameEl = document.getElementById("username");
-      const passwordEl = document.getElementById("password");
-      const message = document.getElementById("message");
+    // basic menu behaviour shared with index
+    function initMenu() {
+      var menuToggle = document.getElementById("menuToggle");
+      var menuClose = document.getElementById("menuClose");
+      var sideMenu = document.getElementById("sideMenu");
+      var overlay = document.getElementById("menuOverlay");
 
-      const email = (emailEl.value || "").trim().toLowerCase();
-      const username = (usernameEl.value || "").trim();
-      const password = (passwordEl.value || "").trim();
-
-      if (!email || !username || !password) {
-        message.textContent = "Please fill in email, username, and password.";
-        return;
+      function openMenu() {
+        if (sideMenu) sideMenu.classList.add("open");
+        if (overlay) overlay.classList.add("visible");
+      }
+      function closeMenu() {
+        if (sideMenu) sideMenu.classList.remove("open");
+        if (overlay) overlay.classList.remove("visible");
       }
 
-      let users = [];
+      if (menuToggle) menuToggle.addEventListener("click", openMenu);
+      if (menuClose) menuClose.addEventListener("click", closeMenu);
+      if (overlay) overlay.addEventListener("click", closeMenu);
+    }
+
+    function loadUsers() {
       try {
-        users = JSON.parse(localStorage.getItem("users") || "[]");
+        var stored = localStorage.getItem("users");
+        if (!stored) return [];
+        return JSON.parse(stored);
       } catch (e) {
-        users = [];
+        return [];
       }
+    }
 
-      if (users.some(u => u.email === email)) {
-        message.textContent = "An account with this email already exists.";
-        return;
-      }
-
-      const newUser = { email, username, password };
-      users.push(newUser);
+    function saveUsers(users) {
       localStorage.setItem("users", JSON.stringify(users));
+    }
 
-      message.textContent = "Account created! Redirecting to login...";
+    document.addEventListener("DOMContentLoaded", function () {
+      initMenu();
 
-      setTimeout(() => {
-        window.location.href = "login.html";
-      }, 1500);
+      var form = document.getElementById("signupForm");
+      var emailInput = document.getElementById("signupEmail");
+      var usernameInput = document.getElementById("signupUsername");
+      var passInput = document.getElementById("signupPassword");
+      var passConfirmInput = document.getElementById("signupPasswordConfirm");
+      var errorEl = document.getElementById("signupError");
+
+      form.addEventListener("submit", function (e) {
+        e.preventDefault();
+        errorEl.textContent = "";
+
+        var email = emailInput.value.trim().toLowerCase();
+        var username = usernameInput.value.trim();
+        var pass = passInput.value;
+        var passConfirm = passConfirmInput.value;
+
+        if (!email || !username || !pass || !passConfirm) {
+          errorEl.textContent = "Please fill in all fields.";
+          return;
+        }
+        if (pass !== passConfirm) {
+          errorEl.textContent = "Passwords do not match.";
+          return;
+        }
+
+        var users = loadUsers();
+        var existing = users.find(function (u) { return u.email === email; });
+        if (existing) {
+          errorEl.textContent = "An account with that email already exists.";
+          return;
+        }
+
+        var newUser = {
+          id: Date.now(),
+          email: email,
+          username: username,
+          password: pass, // NOTE: plain text, ok for demo only
+          createdAt: new Date().toISOString(),
+          avatarDataUrl: null,
+          bio: "",
+          favouritePet: ""
+        };
+
+        users.push(newUser);
+        saveUsers(users);
+
+        localStorage.setItem("currentUser", JSON.stringify(newUser));
+
+        // go to profile after signup
+        window.location.href = "profile.html";
+      });
     });
   </script>
-
 </body>
 </html>
