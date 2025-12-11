@@ -137,7 +137,7 @@ const VARIANT_LABEL = {
   m: "Mega"
 };
 
-// 1 Frost = 95 Sharks (like Elvebredd)
+// 1 Frost = 95 Sharks (base ratio)
 const FROST_TO_SHARK_RATIO = 95;
 
 // 18 slots each side
@@ -380,6 +380,57 @@ function evaluateTrade() {
 }
 
 // ----------------------------
+// SIDE MENU / CONTACT / FEEDBACK
+// ----------------------------
+
+function initMenuAndFeedback() {
+  const menuToggle = $("#menuToggle");
+  const menuClose = $("#menuClose");
+  const sideMenu = $("#sideMenu");
+  const overlay = $("#menuOverlay");
+  const contactBtn = $("#contactEmailBtn");
+  const feedbackBtn = $("#feedbackSendBtn");
+  const feedbackInput = $("#feedbackInput");
+
+  const OWNER_EMAIL = "youremail@example.com"; // TODO: replace with your email
+
+  function openMenu() {
+    if (!sideMenu || !overlay) return;
+    sideMenu.classList.add("open");
+    overlay.classList.add("visible");
+  }
+  function closeMenu() {
+    if (!sideMenu || !overlay) return;
+    sideMenu.classList.remove("open");
+    overlay.classList.remove("visible");
+  }
+
+  if (menuToggle) menuToggle.addEventListener("click", openMenu);
+  if (menuClose) menuClose.addEventListener("click", closeMenu);
+  if (overlay) overlay.addEventListener("click", closeMenu);
+
+  if (contactBtn) {
+    contactBtn.addEventListener("click", () => {
+      window.location.href = `mailto:${OWNER_EMAIL}?subject=Adopt%20Me%20Value%20Question`;
+    });
+  }
+
+  if (feedbackBtn && feedbackInput) {
+    feedbackBtn.addEventListener("click", () => {
+      const text = feedbackInput.value.trim();
+      if (!text) {
+        alert("Please type some feedback first.");
+        return;
+      }
+      const body = encodeURIComponent(text);
+      window.location.href = `mailto:${OWNER_EMAIL}?subject=HighTier%20Values%20Feedback&body=${body}`;
+      feedbackInput.value = "";
+      alert("Feedback opened in your email app. Thanks!");
+    });
+  }
+}
+
+// ----------------------------
 // INIT
 // ----------------------------
 document.addEventListener("DOMContentLoaded", () => {
@@ -400,14 +451,17 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   // Picker buttons
-  $("#pickerCancel").addEventListener("click", () => {
+  $("#pickerCancel")?.addEventListener("click", () => {
     closePicker();
   });
-  $("#pickerAdd").addEventListener("click", handleAddToOffer);
+  $("#pickerAdd")?.addEventListener("click", handleAddToOffer);
 
   // Clear & evaluate
-  $("#clearTrade").addEventListener("click", clearTrade);
-  $("#evaluateBtn").addEventListener("click", evaluateTrade);
+  $("#clearTrade")?.addEventListener("click", clearTrade);
+  $("#evaluateBtn")?.addEventListener("click", evaluateTrade);
+
+  // Menu + feedback
+  initMenuAndFeedback();
 
   // First render + totals
   renderOffers();
