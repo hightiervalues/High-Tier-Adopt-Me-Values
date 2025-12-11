@@ -1,56 +1,117 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Your Profile</title>
-  <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Profile • High Tier Adopt Me Values</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
+  <header class="topbar">
+    <div class="left-header">
+      <button id="menuToggle" class="menu-toggle">☰</button>
+      <div class="logo">HighTier<span>Values</span></div>
+    </div>
 
-  <div class="auth-container">
-    <h2>Your Profile</h2>
+    <nav class="nav">
+      <a href="index.html" class="nav-link">Trade Calc</a>
+      <a href="signup.html" class="nav-link">Sign Up</a>
+      <a href="login.html" class="nav-link">Log In</a>
+      <a href="profile.html" class="nav-link active">Profile</a>
+    </nav>
+  </header>
 
-    <p id="profileEmail" style="font-size:0.9rem;"></p>
-    <p id="profileCreatedAt" style="font-size:0.85rem;color:#555;"></p>
+  <main class="auth-page">
+    <section class="auth-card profile-card">
+      <h1>Your Profile</h1>
+      <p class="auth-subtitle" id="profileSubtitle">
+        Loading your account...
+      </p>
 
-    <hr style="margin:10px 0;opacity:0.4;">
+      <div class="profile-avatar-row">
+        <div id="avatarPreview" class="profile-avatar-preview"></div>
+        <div class="profile-avatar-text">
+          <p class="side-text">Profile picture</p>
+          <input type="file" id="avatarInput" accept="image/*" />
+          <p class="side-hint">We only store it in your browser (no server).</p>
+        </div>
+      </div>
 
-    <label style="text-align:left;font-size:0.85rem;">Username</label>
-    <input id="profileUsername" type="text" placeholder="Username">
+      <form id="profileForm" class="auth-form">
+        <label>
+          Email (not editable)
+          <input type="email" id="profileEmail" disabled />
+        </label>
 
-    <label style="text-align:left;font-size:0.85rem;">Favourite Pet</label>
-    <input id="profileFavPet" type="text" placeholder="e.g. Shadow Dragon">
+        <label>
+          Username
+          <input type="text" id="profileUsername" required />
+        </label>
 
-    <label style="text-align:left;font-size:0.85rem;">Bio</label>
-    <textarea id="profileBio" rows="3" placeholder="Tell people something about you..."
-      style="resize:vertical;"></textarea>
+        <label>
+          Favourite pet
+          <input type="text" id="profileFavouritePet" placeholder="e.g. FR Bat Dragon" />
+        </label>
 
-    <button id="saveProfileBtn" class="btn-primary">Save Profile</button>
+        <label>
+          Bio
+          <textarea id="profileBio" rows="3" placeholder="Tell people about your trading rules, favourite pets, etc."></textarea>
+        </label>
 
-    <p id="profileMessage" style="font-size:0.85rem;"></p>
+        <label>
+          New password (optional)
+          <input type="password" id="profileNewPassword" placeholder="Leave blank to keep your current password" />
+        </label>
 
-    <br>
-    <a href="dashboard.html">Back to Account</a> ·
-    <a href="index.html">Home</a>
-  </div>
+        <button type="submit" class="btn-primary auth-btn">Save changes</button>
+      </form>
+
+      <button id="logoutBtn" class="btn-secondary auth-btn" style="margin-top:10px;">
+        Log out
+      </button>
+
+      <p id="profileMessage" class="auth-message"></p>
+      <p id="profileError" class="auth-error"></p>
+    </section>
+  </main>
+
+  <div id="menuOverlay" class="menu-overlay"></div>
+  <aside id="sideMenu" class="side-menu">
+    <div class="side-menu-header">
+      <h2>Menu</h2>
+      <button id="menuClose" class="menu-close">×</button>
+    </div>
+    <div class="side-menu-section">
+      <p class="side-text">Use the main page to calculate trades.</p>
+    </div>
+  </aside>
 
   <script>
-    function getCurrentUser() {
-      try {
-        return JSON.parse(localStorage.getItem("currentUser"));
-      } catch (e) {
-        return null;
+    function initMenu() {
+      var menuToggle = document.getElementById("menuToggle");
+      var menuClose = document.getElementById("menuClose");
+      var sideMenu = document.getElementById("sideMenu");
+      var overlay = document.getElementById("menuOverlay");
+
+      function openMenu() {
+        if (sideMenu) sideMenu.classList.add("open");
+        if (overlay) overlay.classList.add("visible");
       }
+      function closeMenu() {
+        if (sideMenu) sideMenu.classList.remove("open");
+        if (overlay) overlay.classList.remove("visible");
+      }
+
+      if (menuToggle) menuToggle.addEventListener("click", openMenu);
+      if (menuClose) menuClose.addEventListener("click", closeMenu);
+      if (overlay) overlay.addEventListener("click", closeMenu);
     }
 
-    function saveCurrentUser(user) {
-      localStorage.setItem("currentUser", JSON.stringify(user));
-    }
-
-    function getUsers() {
+    function loadUsers() {
       try {
-        return JSON.parse(localStorage.getItem("users") || "[]");
+        var stored = localStorage.getItem("users");
+        if (!stored) return [];
+        return JSON.parse(stored);
       } catch (e) {
         return [];
       }
@@ -60,77 +121,126 @@
       localStorage.setItem("users", JSON.stringify(users));
     }
 
-    function formatDate(iso) {
-      if (!iso) return "";
-      const d = new Date(iso);
-      if (isNaN(d)) return "";
-      return d.toLocaleDateString(undefined, {
-        year: "numeric",
-        month: "short",
-        day: "numeric"
-      });
-    }
+    document.addEventListener("DOMContentLoaded", function () {
+      initMenu();
 
-    // On load
-    let user = getCurrentUser();
-    if (!user) {
-      // Not logged in – send to login
-      window.location.href = "login.html";
-    }
-
-    const emailEl = document.getElementById("profileEmail");
-    const createdEl = document.getElementById("profileCreatedAt");
-    const usernameEl = document.getElementById("profileUsername");
-    const favPetEl = document.getElementById("profileFavPet");
-    const bioEl = document.getElementById("profileBio");
-    const messageEl = document.getElementById("profileMessage");
-    const saveBtn = document.getElementById("saveProfileBtn");
-
-    // Fill initial values
-    emailEl.textContent = "Email: " + (user.email || "");
-    if (user.createdAt) {
-      createdEl.textContent = "Account created: " + formatDate(user.createdAt);
-    } else {
-      createdEl.textContent = "";
-    }
-
-    usernameEl.value = user.username || "";
-    favPetEl.value = user.favouritePet || user.favoritePet || "";
-    bioEl.value = user.bio || "";
-
-    // Save handler
-    saveBtn.addEventListener("click", () => {
-      const newUsername = usernameEl.value.trim();
-      const newFavPet = favPetEl.value.trim();
-      const newBio = bioEl.value.trim();
-
-      if (!newUsername) {
-        messageEl.textContent = "Username cannot be empty.";
+      var currentStr = localStorage.getItem("currentUser");
+      if (!currentStr) {
+        // not logged in
+        window.location.href = "login.html";
         return;
       }
 
-      // Update currentUser object
-      user.username = newUsername;
-      user.favouritePet = newFavPet;
-      user.bio = newBio;
-
-      // Update in users array as well
-      const users = getUsers();
-      const idx = users.findIndex(u => u.email === user.email);
-      if (idx !== -1) {
-        users[idx] = user;
-        saveUsers(users);
+      var current;
+      try {
+        current = JSON.parse(currentStr);
+      } catch (e) {
+        window.location.href = "login.html";
+        return;
       }
 
-      // Update currentUser in storage
-      saveCurrentUser(user);
+      var subtitle = document.getElementById("profileSubtitle");
+      var emailInput = document.getElementById("profileEmail");
+      var usernameInput = document.getElementById("profileUsername");
+      var favPetInput = document.getElementById("profileFavouritePet");
+      var bioInput = document.getElementById("profileBio");
+      var newPassInput = document.getElementById("profileNewPassword");
+      var avatarPreview = document.getElementById("avatarPreview");
+      var avatarInput = document.getElementById("avatarInput");
+      var form = document.getElementById("profileForm");
+      var logoutBtn = document.getElementById("logoutBtn");
+      var msgEl = document.getElementById("profileMessage");
+      var errEl = document.getElementById("profileError");
 
-      messageEl.textContent = "Profile saved!";
-      setTimeout(() => {
-        messageEl.textContent = "";
-      }, 2000);
+      // Fill with current data
+      emailInput.value = current.email || "";
+      usernameInput.value = current.username || "";
+      favPetInput.value = current.favouritePet || "";
+      bioInput.value = current.bio || "";
+
+      if (current.createdAt) {
+        var d = new Date(current.createdAt);
+        var dateText = isNaN(d) ? "" : d.toLocaleDateString();
+        subtitle.textContent = "Signed in as " + (current.username || current.email) +
+          (dateText ? " • Joined: " + dateText : "");
+      } else {
+        subtitle.textContent = "Signed in as " + (current.username || current.email);
+      }
+
+      if (current.avatarDataUrl && avatarPreview) {
+        avatarPreview.style.backgroundImage = "url(" + current.avatarDataUrl + ")";
+      }
+
+      var newAvatarDataUrl = current.avatarDataUrl || null;
+
+      if (avatarInput) {
+        avatarInput.addEventListener("change", function () {
+          var file = avatarInput.files && avatarInput.files[0];
+          if (!file) return;
+
+          var reader = new FileReader();
+          reader.onload = function (ev) {
+            newAvatarDataUrl = ev.target.result;
+            if (avatarPreview) {
+              avatarPreview.style.backgroundImage = "url(" + newAvatarDataUrl + ")";
+            }
+          };
+          reader.readAsDataURL(file);
+        });
+      }
+
+      form.addEventListener("submit", function (e) {
+        e.preventDefault();
+        msgEl.textContent = "";
+        errEl.textContent = "";
+
+        var newUsername = usernameInput.value.trim();
+        var newFavPet = favPetInput.value.trim();
+        var newBio = bioInput.value.trim();
+        var newPass = newPassInput.value;
+
+        if (!newUsername) {
+          errEl.textContent = "Username cannot be empty.";
+          return;
+        }
+
+        // update in users list
+        var users = loadUsers();
+        var found = users.find(function (u) { return u.email === current.email; });
+        if (!found) {
+          errEl.textContent = "Account not found in storage.";
+          return;
+        }
+
+        found.username = newUsername;
+        found.favouritePet = newFavPet;
+        found.bio = newBio;
+        found.avatarDataUrl = newAvatarDataUrl;
+
+        if (newPass) {
+          found.password = newPass;
+        }
+
+        saveUsers(users);
+
+        // also update currentUser
+        current.username = found.username;
+        current.favouritePet = found.favouritePet;
+        current.bio = found.bio;
+        current.avatarDataUrl = found.avatarDataUrl;
+        if (newPass) current.password = newPass;
+
+        localStorage.setItem("currentUser", JSON.stringify(current));
+
+        newPassInput.value = "";
+        msgEl.textContent = "Profile updated successfully.";
+      });
+
+      logoutBtn.addEventListener("click", function () {
+        localStorage.removeItem("currentUser");
+        window.location.href = "index.html";
+      });
     });
   </script>
-
 </body>
 </html>
