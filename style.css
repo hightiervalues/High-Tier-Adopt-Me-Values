@@ -5,7 +5,8 @@
   font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
 }
 
-/* Light creamy background like Elvebredd */
+/* Default base (light-ish) – themes override these */
+
 body {
   background: #f4efe6;
   color: #3c3c3c;
@@ -189,8 +190,7 @@ body {
 /* BOARD CARD */
 
 .board-card {
-  margin: 0 auto;
-  margin-bottom: 18px;
+  margin: 0 auto 18px;
   max-width: 900px;
   padding: 24px 32px;
   border-radius: 40px;
@@ -227,9 +227,13 @@ body {
 }
 
 .offer-slot.plus::before {
-  content: "+";
+  content: "";
+}
+
+.slot-plus {
   font-size: 2rem;
   color: #f79494;
+  line-height: 1;
 }
 
 .offer-slot.filled {
@@ -261,17 +265,28 @@ body {
   color: #999;
 }
 
+/* Center difference */
+
 .center-value {
+  text-align: center;
+}
+
+.center-main {
   font-size: 3.2rem;
   font-weight: 700;
   color: #444;
 }
 
+.center-sub {
+  margin-top: 4px;
+  font-size: 0.85rem;
+  color: #7a6a5a;
+}
+
 /* MODE TOGGLE (Shark / Frost pill) */
 
 .mode-toggle {
-  margin: 0 auto;
-  margin-bottom: 14px;
+  margin: 0 auto 14px;
   max-width: 400px;
   text-align: center;
 }
