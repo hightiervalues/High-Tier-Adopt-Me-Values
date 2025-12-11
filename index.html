@@ -17,23 +17,41 @@
       <a href="signup.html" class="nav-link">Sign Up</a>
       <a href="login.html" class="nav-link">Log In</a>
       <a href="profile.html" class="nav-link">Profile</a>
-
-      <!-- When LOGGED OUT -->
-      <div id="authButtons" class="auth-buttons">
-        <!-- (kept for future if you want header login behaviour) -->
-      </div>
-
-      <!-- When LOGGED IN (optional, can be improved later) -->
-      <div id="accountArea" class="account-area" style="display:none;">
-        <div id="accountSummary" class="account-summary"></div>
-      </div>
     </nav>
   </header>
 
   <main class="trade-page">
     <h1 class="page-title">Adopt Me High Tier Trade Calculator</h1>
-    <p class="page-subtitle">Compare your offer vs their offer with variants like FR, Neon, Mega and more.</p>
+    <p class="page-subtitle">
+      Compare your offer vs their offer using Shark &amp; Frost values with FR, Neon, Mega and more.
+    </p>
 
+    <!-- Shark & Frost value strip -->
+    <div class="value-strip">
+      <div class="value-box">
+        <div class="value-label">Shark</div>
+        <div class="value-numbers">
+          <span class="value-side-label">You:</span>
+          <span id="yourSharkTotal">0</span>
+          <span class="value-separator">|</span>
+          <span class="value-side-label">Them:</span>
+          <span id="theirSharkTotal">0</span>
+        </div>
+      </div>
+
+      <div class="value-box">
+        <div class="value-label">Frost</div>
+        <div class="value-numbers">
+          <span class="value-side-label">You:</span>
+          <span id="yourFrostTotal">0</span>
+          <span class="value-separator">|</span>
+          <span class="value-side-label">Them:</span>
+          <span id="theirFrostTotal">0</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Offers -->
     <div class="trade-columns">
       <!-- Your Offer -->
       <section class="offer">
