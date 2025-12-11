@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Your Profile</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <div class="auth-container">
+    <h2>Your Profile</h2>
+
+    <p id="profileEmail" style="font-size:0.9rem;"></p>
+    <p id="profileCreatedAt" style="font-size:0.85rem;color:#555;"></p>
+
+    <hr style="margin:10px 0;opacity:0.4;">
+
+    <label style="text-align:left;font-size:0.85rem;">Username</label>
+    <input id="profileUsername" type="text" placeholder="Username">
+
+    <label style="text-align:left;font-size:0.85rem;">Favourite Pet</label>
+    <input id="profileFavPet" type="text" placeholder="e.g. Shadow Dragon">
+
+    <label style="text-align:left;font-size:0.85rem;">Bio</label>
+    <textarea id="profileBio" rows="3" placeholder="Tell people something about you..."
+      style="resize:vertical;"></textarea>
+
+    <button id="saveProfileBtn" class="btn-primary">Save Profile</button>
+
+    <p id="profileMessage" style="font-size:0.85rem;"></p>
+
+    <br>
+    <a href="dashboard.html">Back to Account</a> ·
+    <a href="index.html">Home</a>
+  </div>
+
+  <script>
+    function getCurrentUser() {
+      try {
+        return JSON.parse(localStorage.getItem("currentUser"));
+      } catch (e) {
+        return null;
+      }
+    }
+
+    function saveCurrentUser(user) {
+      localStorage.setItem("currentUser", JSON.stringify(user));
+    }
+
+    function getUsers() {
+      try {
+        return JSON.parse(localStorage.getItem("users") || "[]");
+      } catch (e) {
+        return [];
+      }
+    }
+
+    function saveUsers(users) {
+      localStorage.setItem("users", JSON.stringify(users));
+    }
+
+    function formatDate(iso) {
+      if (!iso) return "";
+      const d = new Date(iso);
+      if (isNaN(d)) return "";
+      return d.toLocaleDateString(undefined, {
+        year: "numeric",
+        month: "short",
+        day: "numeric"
+      });
+    }
+
+    // On load
+    let user = getCurrentUser();
+    if (!user) {
+      // Not logged in – send to login
+      window.location.href = "login.html";
+    }
+
+    const emailEl = document.getElementById("profileEmail");
+    const createdEl = document.getElementById("profileCreatedAt");
+    const usernameEl = document.getElementById("profileUsername");
+    const favPetEl = document.getElementById("profileFavPet");
+    const bioEl = document.getElementById("profileBio");
+    const messageEl = document.getElementById("profileMessage");
+    const saveBtn = document.getElementById("saveProfileBtn");
+
+    // Fill initial values
+    emailEl.textContent = "Email: " + (user.email || "");
+    if (user.createdAt) {
+      createdEl.textContent = "Account created: " + formatDate(user.createdAt);
+    } else {
+      createdEl.textContent = "";
+    }
+
+    usernameEl.value = user.username || "";
+    favPetEl.value = user.favouritePet || user.favoritePet || "";
+    bioEl.value = user.bio || "";
+
+    // Save handler
+    saveBtn.addEventListener("click", () => {
+      const newUsername = usernameEl.value.trim();
+      const newFavPet = favPetEl.value.trim();
+      const newBio = bioEl.value.trim();
+
+      if (!newUsername) {
+        messageEl.textContent = "Username cannot be empty.";
+        return;
+      }
+
+      // Update currentUser object
+      user.username = newUsername;
+      user.favouritePet = newFavPet;
+      user.bio = newBio;
+
+      // Update in users array as well
+      const users = getUsers();
+      const idx = users.findIndex(u => u.email === user.email);
+      if (idx !== -1) {
+        users[idx] = user;
+        saveUsers(users);
+      }
+
+      // Update currentUser in storage
+      saveCurrentUser(user);
+
+      messageEl.textContent = "Profile saved!";
+      setTimeout(() => {
+        messageEl.textContent = "";
+      }, 2000);
+    });
+  </script>
+
+</body>
+</html>
