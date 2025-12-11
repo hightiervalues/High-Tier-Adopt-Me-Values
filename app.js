@@ -1,267 +1,372 @@
-// High-tier pets data is now directly in JS so it works without loading pets.json
-const pets = [
-  { id: "shadow_dragon", name: "Shadow Dragon", tier: "God Tier", rarity: "Legendary", baseValue: 321, demand: 10, icon: "shadow_dragon.png" },
-  { id: "bat_dragon", name: "Bat Dragon", tier: "God Tier", rarity: "Legendary", baseValue: 427, demand: 10, icon: "bat_dragon.png" },
-  { id: "frost_dragon", name: "Frost Dragon", tier: "God Tier", rarity: "Legendary", baseValue: 164, demand: 9, icon: "frost_dragon.png" },
-  { id: "giraffe", name: "Giraffe", tier: "God Tier", rarity: "Legendary", baseValue: 211, demand: 9, icon: "giraffe.png" },
-  { id: "crow", name: "Crow", tier: "Very High", rarity: "Legendary", baseValue: 88.5, demand: 9, icon: "crow.png" },
-  { id: "owl", name: "Owl", tier: "Very High", rarity: "Legendary", baseValue: 136.5, demand: 9, icon: "owl.png" },
-  { id: "parrot", name: "Parrot", tier: "Very High", rarity: "Legendary", baseValue: 107, demand: 9, icon: "parrot.png" },
-  { id: "arctic_reindeer", name: "Arctic Reindeer", tier: "Very High", rarity: "Legendary", baseValue: 38, demand: 8, icon: "arctic_reindeer.png" },
-  { id: "evil_unicorn", name: "Evil Unicorn", tier: "Very High", rarity: "Legendary", baseValue: 77, demand: 8, icon: "evil_unicorn.png" },
-  { id: "frost_fury", name: "Frost Fury", tier: "Very High", rarity: "Legendary", baseValue: 380, demand: 8, icon: "frost_fury.png" },
-  { id: "hedgehog", name: "Hedgehog", tier: "Very High", rarity: "Ultra-Rare", baseValue: 5.75, demand: 8, icon: "hedgehog.png" },
-  { id: "dalmatian", name: "Dalmatian", tier: "High", rarity: "Ultra-Rare", baseValue: 44.5, demand: 7, icon: "dalmatian.png" },
-  { id: "turtle", name: "Turtle", tier: "High", rarity: "Legendary", baseValue: 22.5, demand: 7, icon: "turtle.png" },
-  { id: "kangaroo", name: "Kangaroo", tier: "High", rarity: "Legendary", baseValue: 16.5, demand: 7, icon: "kangaroo.png" },
-  { id: "blue_dog", name: "Blue Dog", tier: "High", rarity: "Uncommon", baseValue: 12, demand: 7, icon: "blue_dog.png" },
-  { id: "pink_cat", name: "Pink Cat", tier: "High", rarity: "Uncommon", baseValue: 5, demand: 7, icon: "pink_cat.png" },
-  { id: "albino_monkey", name: "Albino Monkey", tier: "High", rarity: "Legendary", baseValue: 15.5, demand: 7, icon: "albino_monkey.png" }
+// =========================
+// SIMPLE DATA SETUP
+// =========================
+
+// Each item has category + values per variant.
+// You can add more animals/items and more categories later.
+const ITEMS = [
+  {
+    id: "shadow_dragon",
+    name: "Shadow Dragon",
+    category: "pets",
+    icon: "assets/icons/shadow_dragon.png",
+    value: { np: 800, r: 820, f: 830, fr: 850, n: 1600, m: 2600 }
+  },
+  {
+    id: "frost_dragon",
+    name: "Frost Dragon",
+    category: "pets",
+    icon: "assets/icons/frost_dragon.png",
+    value: { np: 700, r: 720, f: 730, fr: 750, n: 1400, m: 2200 }
+  },
+  {
+    id: "bat_dragon",
+    name: "Bat Dragon",
+    category: "pets",
+    icon: "assets/icons/bat_dragon.png",
+    value: { np: 780, r: 800, f: 810, fr: 830, n: 1550, m: 2500 }
+  },
+  {
+    id: "owl",
+    name: "Owl",
+    category: "pets",
+    icon: "assets/icons/owl.png",
+    value: { np: 600, r: 620, f: 630, fr: 650, n: 1200, m: 1900 }
+  },
+  {
+    id: "parrot",
+    name: "Parrot",
+    category: "pets",
+    icon: "assets/icons/parrot.png",
+    value: { np: 650, r: 670, f: 680, fr: 700, n: 1300, m: 2000 }
+  },
+  {
+    id: "giraffe",
+    name: "Giraffe",
+    category: "pets",
+    icon: "assets/icons/giraffe.png",
+    value: { np: 680, r: 700, f: 710, fr: 730, n: 1350, m: 2100 }
+  },
+  {
+    id: "crow",
+    name: "Crow",
+    category: "pets",
+    icon: "assets/icons/crow.png",
+    value: { np: 580, r: 600, f: 610, fr: 630, n: 1150, m: 1850 }
+  },
+  {
+    id: "arctic_reindeer",
+    name: "Arctic Reindeer",
+    category: "pets",
+    icon: "assets/icons/arctic_reindeer.png",
+    value: { np: 540, r: 560, f: 570, fr: 590, n: 1100, m: 1750 }
+  },
+  {
+    id: "evil_unicorn",
+    name: "Evil Unicorn",
+    category: "pets",
+    icon: "assets/icons/evil_unicorn.png",
+    value: { np: 620, r: 640, f: 650, fr: 670, n: 1250, m: 1950 }
+  },
+  {
+    id: "frost_fury",
+    name: "Frost Fury",
+    category: "pets",
+    icon: "assets/icons/frost_fury.png",
+    value: { np: 500, r: 515, f: 525, fr: 540, n: 1000, m: 1600 }
+  },
+  {
+    id: "dalmatian",
+    name: "Dalmatian",
+    category: "pets",
+    icon: "assets/icons/dalmatian.png",
+    value: { np: 420, r: 430, f: 440, fr: 460, n: 850, m: 1350 }
+  },
+  {
+    id: "hedgehog",
+    name: "Hedgehog",
+    category: "pets",
+    icon: "assets/icons/hedgehog.png",
+    value: { np: 400, r: 410, f: 420, fr: 440, n: 820, m: 1300 }
+  },
+  {
+    id: "turtle",
+    name: "Turtle",
+    category: "pets",
+    icon: "assets/icons/turtle.png",
+    value: { np: 450, r: 465, f: 475, fr: 490, n: 900, m: 1500 }
+  },
+  {
+    id: "kangaroo",
+    name: "Kangaroo",
+    category: "pets",
+    icon: "assets/icons/kangaroo.png",
+    value: { np: 440, r: 455, f: 465, fr: 480, n: 880, m: 1450 }
+  },
+  {
+    id: "albino_monkey",
+    name: "Albino Monkey",
+    category: "pets",
+    icon: "assets/icons/albino_monkey.png",
+    value: { np: 430, r: 445, f: 455, fr: 470, n: 860, m: 1400 }
+  },
+  {
+    id: "blue_dog",
+    name: "Blue Dog",
+    category: "pets",
+    icon: "assets/icons/blue_dog.png",
+    value: { np: 380, r: 390, f: 400, fr: 415, n: 780, m: 1200 }
+  },
+  {
+    id: "pink_cat",
+    name: "Pink Cat",
+    category: "pets",
+    icon: "assets/icons/pink_cat.png",
+    value: { np: 370, r: 380, f: 390, fr: 405, n: 760, m: 1180 }
+  }
+
+  // Later you can add:
+  // { id: "something_stroller", category: "strollers", ... }
+  // { id: "pizza", category: "food", ... } etc.
 ];
 
-let filteredPets = [];
-let tiers = new Set();
-let rarities = new Set();
+const VARIANT_LABEL = {
+  np: "NP",
+  r: "R",
+  f: "F",
+  fr: "FR",
+  n: "Neon",
+  m: "Mega"
+};
 
-const searchInput = document.getElementById("searchInput");
-const tierFilter = document.getElementById("tierFilter");
-const rarityFilter = document.getElementById("rarityFilter");
-const petGrid = document.getElementById("petGrid");
-const tierTabs = document.getElementById("tierTabs");
+// Arrays of 18 slots per side
+const EMPTY_OFFER = () => Array(18).fill(null);
 
-const giveListEl = document.getElementById("giveList");
-const getListEl = document.getElementById("getList");
-const clearGiveBtn = document.getElementById("clearGive");
-const clearGetBtn = document.getElementById("clearGet");
-const evalBtn = document.getElementById("evaluateBtn");
-const tradeResult = document.getElementById("tradeResult");
+const state = {
+  your: EMPTY_OFFER(),
+  their: EMPTY_OFFER(),
+  currentSide: null,
+  currentIndex: null,
+  currentCategory: "pets",
+  selectedItemId: null
+};
 
-const modal = document.getElementById("petModal");
-const modalContent = document.getElementById("modalContent");
-const closeModalBtn = document.getElementById("closeModal");
-
-let giveSide = [];
-let getSide = [];
-let currentTierTab = "All";
-
-window.addEventListener("DOMContentLoaded", () => {
-  pets.forEach(p => {
-    tiers.add(p.tier);
-    rarities.add(p.rarity);
-  });
-
-  setupFilters();
-  renderTierTabs();
-  applyFilters();
-  setupEvents();
-});
-
-/* Filters, search, tier tabs */
-
-function setupFilters() {
-  Array.from(tiers).sort().forEach(t => {
-    const opt = document.createElement("option");
-    opt.value = t;
-    opt.textContent = t;
-    tierFilter.appendChild(opt);
-  });
-
-  Array.from(rarities).sort().forEach(r => {
-    const opt = document.createElement("option");
-    opt.value = r;
-    opt.textContent = r;
-    rarityFilter.appendChild(opt);
-  });
-
-  searchInput.addEventListener("input", applyFilters);
-  tierFilter.addEventListener("change", applyFilters);
-  rarityFilter.addEventListener("change", applyFilters);
+function $(sel) {
+  return document.querySelector(sel);
+}
+function $all(sel) {
+  return Array.from(document.querySelectorAll(sel));
 }
 
-function renderTierTabs() {
-  const allBtn = document.createElement("button");
-  allBtn.textContent = "All";
-  allBtn.className = "tier-btn active";
-  allBtn.onclick = () => setTierTab("All");
-  tierTabs.appendChild(allBtn);
+// ----------------------------
+// PICKER LOGIC
+// ----------------------------
 
-  Array.from(tiers).sort().forEach(t => {
-    const btn = document.createElement("button");
-    btn.textContent = t;
-    btn.className = "tier-btn";
-    btn.onclick = () => setTierTab(t);
-    tierTabs.appendChild(btn);
-  });
+function openPicker(side, index) {
+  state.currentSide = side;
+  state.currentIndex = index;
+  state.selectedItemId = null;
+
+  // Reset variant to NP
+  const radios = document.querySelectorAll('input[name="variant"]');
+  radios.forEach(r => (r.checked = r.value === "np"));
+
+  // Default category = pets
+  setCategory("pets");
+
+  $("#pickerModal").classList.remove("hidden");
 }
 
-function setTierTab(t) {
-  currentTierTab = t;
-  document.querySelectorAll(".tier-btn").forEach(btn => btn.classList.remove("active"));
-  Array.from(tierTabs.children).forEach(btn => {
-    if (btn.textContent === t) btn.classList.add("active");
-    if (t === "All" && btn.textContent === "All") btn.classList.add("active");
-  });
-  applyFilters();
+function closePicker() {
+  $("#pickerModal").classList.add("hidden");
 }
 
-function applyFilters() {
-  const search = searchInput.value.trim().toLowerCase();
-  const tierSelect = tierFilter.value;
-  const raritySelect = rarityFilter.value;
+function setCategory(cat) {
+  state.currentCategory = cat;
 
-  filteredPets = pets.filter(p => {
-    if (search && !p.name.toLowerCase().includes(search)) return false;
-    if (tierSelect && p.tier !== tierSelect) return false;
-    if (raritySelect && p.rarity !== raritySelect) return false;
-    if (currentTierTab !== "All" && p.tier !== currentTierTab) return false;
-    return true;
+  // Tab active states
+  $all(".picker-tab").forEach(btn => {
+    btn.classList.toggle("active", btn.dataset.category === cat);
   });
 
-  renderPetGrid();
-}
+  // Filter items
+  const list = ITEMS.filter(item => item.category === cat);
+  const container = $("#pickerItems");
+  container.innerHTML = "";
 
-/* Pet cards */
-
-function renderPetGrid() {
-  petGrid.innerHTML = "";
-
-  filteredPets.forEach(p => {
-    const card = document.createElement("article");
-    card.className = "card";
-    card.innerHTML = `
-      <div class="card-tier-chip">${p.tier}</div>
-      <div class="card-rarity-chip">${p.rarity}</div>
-      <img src="assets/icons/${p.icon}" alt="${p.name}" />
-      <div class="card-name">${p.name}</div>
-      <div class="card-meta">
-        <span>Base: ${p.baseValue}</span>
-        <span>Demand: ${p.demand}/10</span>
-      </div>
-      <div class="value-pill">NP · R · FR · N · M values inside</div>
-      <div class="demand-bar">
-        <div class="demand-fill" style="width:${p.demand * 10}%"></div>
-      </div>
-    `;
-    card.addEventListener("click", () => openPetModal(p));
-    petGrid.appendChild(card);
-  });
-}
-
-/* Pet modal */
-
-function openPetModal(pet) {
-  const np = pet.baseValue;
-  const r = Math.round(np * 1.08);
-  const fr = Math.round(np * 1.15);
-  const neon = Math.round(np * 1.6);
-  const mega = Math.round(np * 3.2);
-
-  modalContent.innerHTML = `
-    <div style="text-align:center;">
-      <img src="assets/icons/${pet.icon}" alt="${pet.name}"
-           style="width:110px;height:110px;object-fit:contain;margin-bottom:6px;" />
-      <h3>${pet.name}</h3>
-      <p style="margin:0;color:#9ca3af;font-size:0.85rem;">
-        ${pet.tier} • ${pet.rarity}
-      </p>
-      <p style="margin-top:6px;font-size:0.85rem;">
-        Demand: ${pet.demand}/10
-      </p>
-    </div>
-    <div style="margin-top:12px;font-size:0.9rem;">
-      <strong>Values:</strong>
-      <ul style="list-style:none;padding:0;margin-top:6px;">
-        <li>No Potion: ${np}</li>
-        <li>Ride: ${r}</li>
-        <li>Fly Ride: ${fr}</li>
-        <li>Neon: ${neon}</li>
-        <li>Mega: ${mega}</li>
-      </ul>
-    </div>
-    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:14px;">
-      <button class="btn-primary" data-side="give">Add to your offer</button>
-      <button class="btn-secondary" data-side="get">Add to their offer</button>
-    </div>
-  `;
-
-  modalContent.querySelectorAll("button[data-side]").forEach(btn => {
-    btn.addEventListener("click", () => {
-      const side = btn.dataset.side;
-      addToTrade(side, pet, np);
-      closeModal();
-    });
-  });
-
-  modal.classList.remove("hidden");
-}
-
-function closeModal() {
-  modal.classList.add("hidden");
-}
-
-/* Trade calculator */
-
-function setupEvents() {
-  closeModalBtn.addEventListener("click", closeModal);
-  modal.addEventListener("click", e => {
-    if (e.target === modal) closeModal();
-  });
-
-  clearGiveBtn.addEventListener("click", () => {
-    giveSide = [];
-    renderTradeLists();
-  });
-
-  clearGetBtn.addEventListener("click", () => {
-    getSide = [];
-    renderTradeLists();
-  });
-
-  evalBtn.addEventListener("click", evaluateTrade);
-}
-
-function addToTrade(side, pet, value) {
-  const item = { name: pet.name, value };
-  if (side === "give") giveSide.push(item);
-  else getSide.push(item);
-  renderTradeLists();
-}
-
-function renderTradeLists() {
-  giveListEl.innerHTML = "";
-  getListEl.innerHTML = "";
-
-  giveSide.forEach(i => {
-    const el = document.createElement("div");
-    el.className = "trade-item";
-    el.innerHTML = `<span>${i.name}</span><span>(${i.value})</span>`;
-    giveListEl.appendChild(el);
-  });
-
-  getSide.forEach(i => {
-    const el = document.createElement("div");
-    el.className = "trade-item";
-    el.innerHTML = `<span>${i.name}</span><span>(${i.value})</span>`;
-    getListEl.appendChild(el);
-  });
-
-  tradeResult.textContent = "";
-}
-
-function evaluateTrade() {
-  const giveTotal = giveSide.reduce((sum, i) => sum + i.value, 0);
-  const getTotal = getSide.reduce((sum, i) => sum + i.value, 0);
-
-  if (!giveSide.length && !getSide.length) {
-    tradeResult.textContent = "Add pets to compare a trade.";
+  if (list.length === 0) {
+    container.innerHTML = `<p class="picker-empty">No items in this category yet.</p>`;
     return;
   }
 
-  let verdict = "Fair trade.";
-  const diff = giveTotal - getTotal;
-
-  if (diff > 80) verdict = "You are overpaying.";
-  else if (diff < -80) verdict = "You are winning.";
-
-  tradeResult.textContent = `You give ${giveTotal} vs they give ${getTotal} → ${verdict}`;
+  list.forEach(item => {
+    const card = document.createElement("button");
+    card.type = "button";
+    card.className = "picker-item";
+    card.dataset.id = item.id;
+    card.innerHTML = `
+      <img src="${item.icon}" alt="${item.name}" />
+      <span>${item.name}</span>
+    `;
+    card.addEventListener("click", () => {
+      state.selectedItemId = item.id;
+      // highlight selected
+      $all(".picker-item").forEach(i => i.classList.remove("selected"));
+      card.classList.add("selected");
+    });
+    container.appendChild(card);
+  });
 }
+
+// ----------------------------
+// RENDER OFFERS
+// ----------------------------
+
+function renderOffers() {
+  // your side
+  $all('.offer-slot[data-side="your"]').forEach(slot => {
+    const index = Number(slot.dataset.index);
+    const entry = state.your[index];
+    renderSlot(slot, entry);
+  });
+
+  // their side
+  $all('.offer-slot[data-side="their"]').forEach(slot => {
+    const index = Number(slot.dataset.index);
+    const entry = state.their[index];
+    renderSlot(slot, entry);
+  });
+}
+
+function renderSlot(slot, entry) {
+  slot.innerHTML = "";
+  slot.classList.remove("filled");
+
+  if (!entry) {
+    // If first slot and has class plus, show +
+    if (slot.classList.contains("plus")) {
+      const plusDiv = document.createElement("div");
+      plusDiv.className = "slot-plus";
+      plusDiv.textContent = "+";
+      slot.appendChild(plusDiv);
+    }
+    return;
+  }
+
+  slot.classList.add("filled");
+  const item = ITEMS.find(i => i.id === entry.itemId);
+  if (!item) return;
+
+  const wrap = document.createElement("div");
+  wrap.className = "slot-content";
+  wrap.innerHTML = `
+    <img src="${item.icon}" alt="${item.name}" />
+    <div class="slot-text">
+      <span class="slot-name">${item.name}</span>
+      <span class="slot-variant">${VARIANT_LABEL[entry.variant] || ""}</span>
+    </div>
+  `;
+  slot.appendChild(wrap);
+}
+
+function getSelectedVariant() {
+  const radio = document.querySelector('input[name="variant"]:checked');
+  return radio ? radio.value : "np";
+}
+
+function handleAddToOffer() {
+  if (!state.selectedItemId) {
+    alert("Select an item first.");
+    return;
+  }
+
+  const variant = getSelectedVariant();
+  const sideArray = state.currentSide === "your" ? state.your : state.their;
+  sideArray[state.currentIndex] = {
+    itemId: state.selectedItemId,
+    variant
+  };
+
+  renderOffers();
+  closePicker();
+}
+
+function clearTrade() {
+  state.your = EMPTY_OFFER();
+  state.their = EMPTY_OFFER();
+  renderOffers();
+  $("#tradeResult").textContent = "";
+}
+
+function evaluateTrade() {
+  let yourTotal = 0;
+  let theirTotal = 0;
+
+  state.your.forEach(entry => {
+    if (!entry) return;
+    const item = ITEMS.find(i => i.id === entry.itemId);
+    if (!item) return;
+    const v = item.value[entry.variant] || 0;
+    yourTotal += v;
+  });
+
+  state.their.forEach(entry => {
+    if (!entry) return;
+    const item = ITEMS.find(i => i.id === entry.itemId);
+    if (!item) return;
+    const v = item.value[entry.variant] || 0;
+    theirTotal += v;
+  });
+
+  const resultEl = $("#tradeResult");
+  if (yourTotal === 0 && theirTotal === 0) {
+    resultEl.textContent = "Add some items to both offers to evaluate.";
+    return;
+  }
+
+  let message = `Your value: ${yourTotal} • Their value: ${theirTotal} – `;
+
+  if (yourTotal > theirTotal + 30) {
+    message += "You are overpaying a lot. 🟥";
+  } else if (theirTotal > yourTotal + 30) {
+    message += "They are over. This looks like a win for you. 🟩";
+  } else {
+    message += "This is around fair. 🟨";
+  }
+
+  resultEl.textContent = message;
+}
+
+// ----------------------------
+// INIT
+// ----------------------------
+document.addEventListener("DOMContentLoaded", () => {
+  // Slot click handlers
+  $all(".offer-slot").forEach(slot => {
+    slot.addEventListener("click", () => {
+      const side = slot.dataset.side;
+      const index = Number(slot.dataset.index);
+      openPicker(side, index);
+    });
+  });
+
+  // Category tabs
+  $all(".picker-tab").forEach(btn => {
+    btn.addEventListener("click", () => {
+      setCategory(btn.dataset.category);
+    });
+  });
+
+  // Picker buttons
+  $("#pickerCancel").addEventListener("click", () => {
+    closePicker();
+  });
+  $("#pickerAdd").addEventListener("click", handleAddToOffer);
+
+  // Clear & evaluate
+  $("#clearTrade").addEventListener("click", clearTrade);
+  $("#evaluateBtn").addEventListener("click", evaluateTrade);
+
+  // First render
+  renderOffers();
+});
