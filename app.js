@@ -124,8 +124,6 @@ const ITEMS = [
     icon: "assets/icons/pink_cat.png",
     value: { np: 370, r: 380, f: 390, fr: 405, n: 760, m: 1180 }
   }
-
-  // Later: add strollers / food / pet wear / vehicles with category: "strollers", etc.
 ];
 
 const VARIANT_LABEL = {
@@ -137,8 +135,8 @@ const VARIANT_LABEL = {
   m: "Mega"
 };
 
-// 1 Frost = 164 Sharks (base ratio)
-const FROST_TO_SHARK_RATIO = 164;
+// 1 Frost = 95 Sharks (base ratio)
+const FROST_TO_SHARK_RATIO = 95;
 
 // 18 slots each side
 const EMPTY_OFFER = () => Array(18).fill(null);
@@ -170,33 +168,40 @@ function openPicker(side, index) {
 
   // Reset variant to NP
   const radios = document.querySelectorAll('input[name="variant"]');
-  radios.forEach(r => (r.checked = r.value === "np"));
+  for (let i = 0; i < radios.length; i++) {
+    radios[i].checked = radios[i].value === "np";
+  }
 
   // Default category = pets
   setCategory("pets");
 
-  $("#pickerModal").classList.remove("hidden");
+  const modal = $("#pickerModal");
+  if (modal) modal.classList.remove("hidden");
 }
 
 function closePicker() {
-  $("#pickerModal").classList.add("hidden");
+  const modal = $("#pickerModal");
+  if (modal) modal.classList.add("hidden");
 }
 
 function setCategory(cat) {
   state.currentCategory = cat;
 
   // Tab active states
-  $all(".picker-tab").forEach(btn => {
+  const tabs = $all(".picker-tab");
+  for (let i = 0; i < tabs.length; i++) {
+    const btn = tabs[i];
     btn.classList.toggle("active", btn.dataset.category === cat);
-  });
+  }
 
   // Filter items
   const list = ITEMS.filter(item => item.category === cat);
   const container = $("#pickerItems");
+  if (!container) return;
   container.innerHTML = "";
 
   if (list.length === 0) {
-    container.innerHTML = `<p class="picker-empty">No items in this category yet.</p>`;
+    container.innerHTML = '<p class="picker-empty">No items in this category yet.</p>';
     return;
   }
 
@@ -209,10 +214,12 @@ function setCategory(cat) {
       <img src="${item.icon}" alt="${item.name}" />
       <span>${item.name}</span>
     `;
-    card.addEventListener("click", () => {
+    card.addEventListener("click", function () {
       state.selectedItemId = item.id;
-      // highlight selected
-      $all(".picker-item").forEach(i => i.classList.remove("selected"));
+      const allCards = $all(".picker-item");
+      for (let j = 0; j < allCards.length; j++) {
+        allCards[j].classList.remove("selected");
+      }
       card.classList.add("selected");
     });
     container.appendChild(card);
@@ -224,19 +231,22 @@ function setCategory(cat) {
 // ----------------------------
 
 function renderOffers() {
-  // your side
-  $all('.offer-slot[data-side="your"]').forEach(slot => {
+  const yourSlots = $all('.offer-slot[data-side="your"]');
+  const theirSlots = $all('.offer-slot[data-side="their"]');
+
+  for (let i = 0; i < yourSlots.length; i++) {
+    const slot = yourSlots[i];
     const index = Number(slot.dataset.index);
     const entry = state.your[index];
     renderSlot(slot, entry);
-  });
+  }
 
-  // their side
-  $all('.offer-slot[data-side="their"]').forEach(slot => {
+  for (let i = 0; i < theirSlots.length; i++) {
+    const slot = theirSlots[i];
     const index = Number(slot.dataset.index);
     const entry = state.their[index];
     renderSlot(slot, entry);
-  });
+  }
 }
 
 function renderSlot(slot, entry) {
@@ -270,8 +280,13 @@ function renderSlot(slot, entry) {
 }
 
 function getSelectedVariant() {
-  const radio = document.querySelector('input[name="variant"]:checked');
-  return radio ? radio.value : "np";
+  const radios = document.querySelectorAll('input[name="variant"]');
+  for (let i = 0; i < radios.length; i++) {
+    if (radios[i].checked) {
+      return radios[i].value;
+    }
+  }
+  return "np";
 }
 
 function handleAddToOffer() {
@@ -284,7 +299,7 @@ function handleAddToOffer() {
   const sideArray = state.currentSide === "your" ? state.your : state.their;
   sideArray[state.currentIndex] = {
     itemId: state.selectedItemId,
-    variant
+    variant: variant
   };
 
   renderOffers();
@@ -315,29 +330,31 @@ function calculateTotals() {
   let yourSharkTotal = 0;
   let theirSharkTotal = 0;
 
-  state.your.forEach(entry => {
-    if (!entry) return;
-    const item = ITEMS.find(i => i.id === entry.itemId);
-    if (!item) return;
+  for (let i = 0; i < state.your.length; i++) {
+    const entry = state.your[i];
+    if (!entry) continue;
+    const item = ITEMS.find(it => it.id === entry.itemId);
+    if (!item) continue;
     const v = item.value[entry.variant] || 0;
     yourSharkTotal += v;
-  });
+  }
 
-  state.their.forEach(entry => {
-    if (!entry) return;
-    const item = ITEMS.find(i => i.id === entry.itemId);
-    if (!item) return;
+  for (let i = 0; i < state.their.length; i++) {
+    const entry = state.their[i];
+    if (!entry) continue;
+    const item = ITEMS.find(it => it.id === entry.itemId);
+    if (!item) continue;
     const v = item.value[entry.variant] || 0;
     theirSharkTotal += v;
-  });
+  }
 
   return { yourSharkTotal, theirSharkTotal };
 }
 
 function calculateAndUpdateTotals() {
-  const { yourSharkTotal, theirSharkTotal } = calculateTotals();
-  updateTotalsUI(yourSharkTotal, theirSharkTotal);
-  return { yourSharkTotal, theirSharkTotal };
+  const totals = calculateTotals();
+  updateTotalsUI(totals.yourSharkTotal, totals.theirSharkTotal);
+  return totals;
 }
 
 // ----------------------------
@@ -354,7 +371,9 @@ function clearTrade() {
 }
 
 function evaluateTrade() {
-  const { yourSharkTotal, theirSharkTotal } = calculateAndUpdateTotals();
+  const totals = calculateAndUpdateTotals();
+  const yourSharkTotal = totals.yourSharkTotal;
+  const theirSharkTotal = totals.theirSharkTotal;
 
   const resultEl = $("#tradeResult");
   if (!resultEl) return;
@@ -365,8 +384,8 @@ function evaluateTrade() {
   }
 
   let message =
-    `Your value: ${yourSharkTotal.toFixed(2)} sharks • ` +
-    `Their value: ${theirSharkTotal.toFixed(2)} sharks – `;
+    "Your value: " + yourSharkTotal.toFixed(2) + " sharks • " +
+    "Their value: " + theirSharkTotal.toFixed(2) + " sharks – ";
 
   if (yourSharkTotal > theirSharkTotal + 30) {
     message += "You are overpaying a lot. 🟥";
@@ -392,38 +411,50 @@ function initMenuAndFeedback() {
   const feedbackBtn = $("#feedbackSendBtn");
   const feedbackInput = $("#feedbackInput");
 
-  const OWNER_EMAIL = "onedevgameshelp@gmail.com"; // TODO: replace with your email
+  // TODO: change this to your real email:
+  const OWNER_EMAIL = "youremail@example.com";
 
   function openMenu() {
-    if (!sideMenu || !overlay) return;
-    sideMenu.classList.add("open");
-    overlay.classList.add("visible");
+    if (sideMenu) sideMenu.classList.add("open");
+    if (overlay) overlay.classList.add("visible");
   }
   function closeMenu() {
-    if (!sideMenu || !overlay) return;
-    sideMenu.classList.remove("open");
-    overlay.classList.remove("visible");
+    if (sideMenu) sideMenu.classList.remove("open");
+    if (overlay) overlay.classList.remove("visible");
   }
 
-  if (menuToggle) menuToggle.addEventListener("click", openMenu);
-  if (menuClose) menuClose.addEventListener("click", closeMenu);
-  if (overlay) overlay.addEventListener("click", closeMenu);
+  if (menuToggle) {
+    menuToggle.addEventListener("click", openMenu);
+  }
+  if (menuClose) {
+    menuClose.addEventListener("click", closeMenu);
+  }
+  if (overlay) {
+    overlay.addEventListener("click", closeMenu);
+  }
 
   if (contactBtn) {
-    contactBtn.addEventListener("click", () => {
-      window.location.href = `mailto:${OWNER_EMAIL}?subject=Adopt%20Me%20Value%20Question`;
+    contactBtn.addEventListener("click", function () {
+      window.location.href =
+        "mailto:" +
+        OWNER_EMAIL +
+        "?subject=Adopt%20Me%20Value%20Question";
     });
   }
 
   if (feedbackBtn && feedbackInput) {
-    feedbackBtn.addEventListener("click", () => {
+    feedbackBtn.addEventListener("click", function () {
       const text = feedbackInput.value.trim();
       if (!text) {
         alert("Please type some feedback first.");
         return;
       }
       const body = encodeURIComponent(text);
-      window.location.href = `mailto:${OWNER_EMAIL}?subject=HighTier%20Values%20Feedback&body=${body}`;
+      window.location.href =
+        "mailto:" +
+        OWNER_EMAIL +
+        "?subject=HighTier%20Values%20Feedback&body=" +
+        body;
       feedbackInput.value = "";
       alert("Feedback opened in your email app. Thanks!");
     });
@@ -433,32 +464,48 @@ function initMenuAndFeedback() {
 // ----------------------------
 // INIT
 // ----------------------------
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", function () {
   // Slot click handlers
-  $all(".offer-slot").forEach(slot => {
-    slot.addEventListener("click", () => {
+  const slots = $all(".offer-slot");
+  for (let i = 0; i < slots.length; i++) {
+    const slot = slots[i];
+    slot.addEventListener("click", function () {
       const side = slot.dataset.side;
       const index = Number(slot.dataset.index);
       openPicker(side, index);
     });
-  });
+  }
 
   // Category tabs
-  $all(".picker-tab").forEach(btn => {
-    btn.addEventListener("click", () => {
+  const tabs = $all(".picker-tab");
+  for (let i = 0; i < tabs.length; i++) {
+    const btn = tabs[i];
+    btn.addEventListener("click", function () {
       setCategory(btn.dataset.category);
     });
-  });
+  }
 
   // Picker buttons
-  $("#pickerCancel")?.addEventListener("click", () => {
-    closePicker();
-  });
-  $("#pickerAdd")?.addEventListener("click", handleAddToOffer);
+  const pickerCancel = $("#pickerCancel");
+  const pickerAdd = $("#pickerAdd");
+  if (pickerCancel) {
+    pickerCancel.addEventListener("click", function () {
+      closePicker();
+    });
+  }
+  if (pickerAdd) {
+    pickerAdd.addEventListener("click", handleAddToOffer);
+  }
 
   // Clear & evaluate
-  $("#clearTrade")?.addEventListener("click", clearTrade);
-  $("#evaluateBtn")?.addEventListener("click", evaluateTrade);
+  const clearBtn = $("#clearTrade");
+  const evalBtn = $("#evaluateBtn");
+  if (clearBtn) {
+    clearBtn.addEventListener("click", clearTrade);
+  }
+  if (evalBtn) {
+    evalBtn.addEventListener("click", evaluateTrade);
+  }
 
   // Menu + feedback
   initMenuAndFeedback();
@@ -467,4 +514,3 @@ document.addEventListener("DOMContentLoaded", () => {
   renderOffers();
   updateTotalsUI(0, 0);
 });
-
