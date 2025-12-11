@@ -1,78 +1,132 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Log In</title>
-  <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Log In • High Tier Adopt Me Values</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
+  <header class="topbar">
+    <div class="left-header">
+      <button id="menuToggle" class="menu-toggle">☰</button>
+      <div class="logo">HighTier<span>Values</span></div>
+    </div>
 
-  <div class="auth-container">
-    <h2>Log In</h2>
+    <nav class="nav">
+      <a href="index.html" class="nav-link">Trade Calc</a>
+      <a href="signup.html" class="nav-link">Sign Up</a>
+      <a href="login.html" class="nav-link active">Log In</a>
+      <a href="profile.html" class="nav-link">Profile</a>
+    </nav>
+  </header>
 
-    <input id="email" type="email" placeholder="Email">
-    <input id="password" type="password" placeholder="Password">
+  <main class="auth-page">
+    <section class="auth-card">
+      <h1>Welcome back</h1>
+      <p class="auth-subtitle">
+        Log in to manage your High Tier Values profile.
+      </p>
 
-    <button id="loginBtn" class="btn-primary">Log In</button>
-    <button id="resetAccountsBtn" class="btn-secondary">Reset saved accounts</button>
+      <form id="loginForm" class="auth-form">
+        <label>
+          Email
+          <input type="email" id="loginEmail" required placeholder="you@example.com" />
+        </label>
 
-    <p id="message"></p>
-    <p id="debugInfo" style="font-size:0.8rem;color:#555;"></p>
+        <label>
+          Password
+          <input type="password" id="loginPassword" required placeholder="Your password" />
+        </label>
 
-    <a href="signup.html">Need an account? Sign up</a>
-  </div>
+        <button type="submit" class="btn-primary auth-btn">Log In</button>
+      </form>
+
+      <p class="auth-footer-text">
+        No account yet?
+        <a href="signup.html">Sign up</a>
+      </p>
+
+      <p id="loginError" class="auth-error"></p>
+    </section>
+  </main>
+
+  <div id="menuOverlay" class="menu-overlay"></div>
+  <aside id="sideMenu" class="side-menu">
+    <div class="side-menu-header">
+      <h2>Menu</h2>
+      <button id="menuClose" class="menu-close">×</button>
+    </div>
+    <div class="side-menu-section">
+      <p class="side-text">Use the main page to calculate trades.</p>
+    </div>
+  </aside>
 
   <script>
-    function getUsers() {
+    function initMenu() {
+      var menuToggle = document.getElementById("menuToggle");
+      var menuClose = document.getElementById("menuClose");
+      var sideMenu = document.getElementById("sideMenu");
+      var overlay = document.getElementById("menuOverlay");
+
+      function openMenu() {
+        if (sideMenu) sideMenu.classList.add("open");
+        if (overlay) overlay.classList.add("visible");
+      }
+      function closeMenu() {
+        if (sideMenu) sideMenu.classList.remove("open");
+        if (overlay) overlay.classList.remove("visible");
+      }
+
+      if (menuToggle) menuToggle.addEventListener("click", openMenu);
+      if (menuClose) menuClose.addEventListener("click", closeMenu);
+      if (overlay) overlay.addEventListener("click", closeMenu);
+    }
+
+    function loadUsers() {
       try {
-        return JSON.parse(localStorage.getItem("users") || "[]");
+        var stored = localStorage.getItem("users");
+        if (!stored) return [];
+        return JSON.parse(stored);
       } catch (e) {
         return [];
       }
     }
 
-    function updateDebug() {
-      const users = getUsers();
-      const debug = document.getElementById("debugInfo");
-      if (users.length === 0) {
-        debug.textContent = "Users saved in this browser: 0 (go to Sign Up to create one).";
-      } else {
-        debug.textContent = "Users saved: " + users.length + 
-          " (first email: " + users[0].email + ")";
-      }
-    }
+    document.addEventListener("DOMContentLoaded", function () {
+      initMenu();
 
-    document.getElementById("loginBtn").addEventListener("click", () => {
-      const email = document.getElementById("email").value.trim().toLowerCase();
-      const password = document.getElementById("password").value.trim();
-      const message = document.getElementById("message");
+      var form = document.getElementById("loginForm");
+      var emailInput = document.getElementById("loginEmail");
+      var passInput = document.getElementById("loginPassword");
+      var errorEl = document.getElementById("loginError");
 
-      const users = getUsers();
-      const user = users.find(u => u.email === email && u.password === password);
+      form.addEventListener("submit", function (e) {
+        e.preventDefault();
+        errorEl.textContent = "";
 
-      if (user) {
+        var email = emailInput.value.trim().toLowerCase();
+        var pass = passInput.value;
+
+        if (!email || !pass) {
+          errorEl.textContent = "Please enter your email and password.";
+          return;
+        }
+
+        var users = loadUsers();
+        var user = users.find(function (u) { return u.email === email; });
+
+        if (!user || user.password !== pass) {
+          errorEl.textContent = "Login failed. Please check your details.";
+          return;
+        }
+
         localStorage.setItem("currentUser", JSON.stringify(user));
-        message.textContent = "Login successful! Redirecting...";
 
-        setTimeout(() => {
-          window.location.href = "dashboard.html";
-        }, 1000);
-      } else {
-        message.textContent = "Login failed — please try again (use the same email and password you signed up with).";
-      }
+        // go back to main calculator or profile
+        window.location.href = "index.html";
+      });
     });
-
-    document.getElementById("resetAccountsBtn").addEventListener("click", () => {
-      localStorage.removeItem("users");
-      localStorage.removeItem("currentUser");
-      document.getElementById("message").textContent = "All saved accounts deleted. Go to Sign Up to create a new one.";
-      updateDebug();
-    });
-
-    // On page load
-    updateDebug();
   </script>
-
 </body>
 </html>
