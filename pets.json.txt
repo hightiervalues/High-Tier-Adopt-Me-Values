@@ -4,7 +4,7 @@
     "name": "Shadow Dragon",
     "tier": "God Tier",
     "rarity": "Legendary",
-    "baseValue": 800,
+    "baseValue": 321,
     "demand": 10,
     "icon": "shadow_dragon.png"
   },
@@ -13,7 +13,7 @@
     "name": "Bat Dragon",
     "tier": "God Tier",
     "rarity": "Legendary",
-    "baseValue": 750,
+    "baseValue": 472,
     "demand": 10,
     "icon": "bat_dragon.png"
   },
@@ -22,7 +22,7 @@
     "name": "Frost Dragon",
     "tier": "God Tier",
     "rarity": "Legendary",
-    "baseValue": 700,
+    "baseValue": 164,
     "demand": 9,
     "icon": "frost_dragon.png"
   },
@@ -31,7 +31,7 @@
     "name": "Giraffe",
     "tier": "God Tier",
     "rarity": "Legendary",
-    "baseValue": 680,
+    "baseValue": 211,
     "demand": 9,
     "icon": "giraffe.png"
   },
@@ -40,7 +40,7 @@
     "name": "Crow",
     "tier": "Very High",
     "rarity": "Legendary",
-    "baseValue": 520,
+    "baseValue": 88.5,
     "demand": 9,
     "icon": "crow.png"
   },
@@ -49,7 +49,7 @@
     "name": "Owl",
     "tier": "Very High",
     "rarity": "Legendary",
-    "baseValue": 540,
+    "baseValue": 136.5,
     "demand": 9,
     "icon": "owl.png"
   },
@@ -58,7 +58,7 @@
     "name": "Parrot",
     "tier": "Very High",
     "rarity": "Legendary",
-    "baseValue": 560,
+    "baseValue": 107,
     "demand": 9,
     "icon": "parrot.png"
   },
@@ -67,7 +67,7 @@
     "name": "Arctic Reindeer",
     "tier": "Very High",
     "rarity": "Legendary",
-    "baseValue": 430,
+    "baseValue": 38,
     "demand": 8,
     "icon": "arctic_reindeer.png"
   },
@@ -76,7 +76,7 @@
     "name": "Evil Unicorn",
     "tier": "Very High",
     "rarity": "Legendary",
-    "baseValue": 420,
+    "baseValue": 77,
     "demand": 8,
     "icon": "evil_unicorn.png"
   },
@@ -85,7 +85,7 @@
     "name": "Frost Fury",
     "tier": "Very High",
     "rarity": "Legendary",
-    "baseValue": 380,
+    "baseValue": 5.75,
     "demand": 8,
     "icon": "frost_fury.png"
   },
@@ -94,7 +94,7 @@
     "name": "Hedgehog",
     "tier": "Very High",
     "rarity": "Ultra-Rare",
-    "baseValue": 360,
+    "baseValue": 54,
     "demand": 8,
     "icon": "hedgehog.png"
   },
@@ -103,7 +103,7 @@
     "name": "Dalmatian",
     "tier": "High",
     "rarity": "Ultra-Rare",
-    "baseValue": 300,
+    "baseValue": 44.5,
     "demand": 7,
     "icon": "dalmatian.png"
   },
@@ -112,7 +112,7 @@
     "name": "Turtle",
     "tier": "High",
     "rarity": "Legendary",
-    "baseValue": 320,
+    "baseValue": 22.5,
     "demand": 7,
     "icon": "turtle.png"
   },
@@ -121,7 +121,7 @@
     "name": "Kangaroo",
     "tier": "High",
     "rarity": "Legendary",
-    "baseValue": 290,
+    "baseValue": 16.5,
     "demand": 7,
     "icon": "kangaroo.png"
   },
@@ -130,7 +130,7 @@
     "name": "Blue Dog",
     "tier": "High",
     "rarity": "Uncommon",
-    "baseValue": 260,
+    "baseValue": 12,
     "demand": 7,
     "icon": "blue_dog.png"
   },
@@ -139,7 +139,7 @@
     "name": "Pink Cat",
     "tier": "High",
     "rarity": "Uncommon",
-    "baseValue": 240,
+    "baseValue": 5,
     "demand": 7,
     "icon": "pink_cat.png"
   },
@@ -148,8 +148,9 @@
     "name": "Albino Monkey",
     "tier": "High",
     "rarity": "Legendary",
-    "baseValue": 280,
+    "baseValue": 15.5,
     "demand": 7,
     "icon": "albino_monkey.png"
   }
 ]
+
