@@ -138,7 +138,7 @@ const VARIANT_LABEL = {
 // 1 Frost = 95 Sharks (base ratio)
 const FROST_TO_SHARK_RATIO = 95;
 
-// 18 slots each side
+// 18 slots each side (even though we visually use 9, extra slots just unused)
 const EMPTY_OFFER = () => Array(18).fill(null);
 
 const state = {
@@ -147,7 +147,8 @@ const state = {
   currentSide: null,
   currentIndex: null,
   currentCategory: "pets",
-  selectedItemId: null
+  selectedItemId: null,
+  mode: "shark" // "shark" or "frost"
 };
 
 function $(sel) {
@@ -271,10 +272,8 @@ function renderSlot(slot, entry) {
   wrap.className = "slot-content";
   wrap.innerHTML = `
     <img src="${item.icon}" alt="${item.name}" />
-    <div class="slot-text">
-      <span class="slot-name">${item.name}</span>
-      <span class="slot-variant">${VARIANT_LABEL[entry.variant] || ""}</span>
-    </div>
+    <div class="slot-name">${item.name}</div>
+    <div class="slot-variant">${VARIANT_LABEL[entry.variant] || ""}</div>
   `;
   slot.appendChild(wrap);
 }
@@ -315,15 +314,47 @@ function updateTotalsUI(yourShark, theirShark) {
   const yourFrost = yourShark / FROST_TO_SHARK_RATIO;
   const theirFrost = theirShark / FROST_TO_SHARK_RATIO;
 
-  const ys = document.getElementById("yourSharkTotal");
-  const ts = document.getElementById("theirSharkTotal");
-  const yf = document.getElementById("yourFrostTotal");
-  const tf = document.getElementById("theirFrostTotal");
+  // Which unit are we showing?
+  let yourDisplay = yourShark;
+  let theirDisplay = theirShark;
+  let unitLabel = "sharks";
 
-  if (ys) ys.textContent = yourShark.toFixed(2);
-  if (ts) ts.textContent = theirShark.toFixed(2);
-  if (yf) yf.textContent = yourFrost.toFixed(2);
-  if (tf) tf.textContent = theirFrost.toFixed(2);
+  if (state.mode === "frost") {
+    yourDisplay = yourFrost;
+    theirDisplay = theirFrost;
+    unitLabel = "frosts";
+  }
+
+  // Top big numbers
+  const summaryYour = document.getElementById("summaryYour");
+  const summaryTheir = document.getElementById("summaryTheir");
+  if (summaryYour) summaryYour.textContent = Math.round(yourDisplay);
+  if (summaryTheir) summaryTheir.textContent = Math.round(theirDisplay);
+
+  // Center value + arrows text
+  const center = document.getElementById("centerValue");
+  if (center) {
+    const main = center.querySelector(".center-main");
+    const sub = center.querySelector(".center-sub");
+
+    const diff = theirDisplay - yourDisplay; // positive = good for you
+    const absDiff = Math.abs(diff);
+
+    if (absDiff < 0.5) {
+      if (main) main.textContent = "0";
+      if (sub) sub.textContent = "Fair";
+    } else if (diff > 0) {
+      // They are overpaying (win for you)
+      const d = Math.round(absDiff);
+      if (main) main.textContent = d.toString();
+      if (sub) sub.textContent = `↑ They over by ${d} ${unitLabel}`;
+    } else {
+      // You are overpaying
+      const d = Math.round(absDiff);
+      if (main) main.textContent = d.toString();
+      if (sub) sub.textContent = `↓ You over by ${d} ${unitLabel}`;
+    }
+  }
 }
 
 function calculateTotals() {
@@ -383,10 +414,22 @@ function evaluateTrade() {
     return;
   }
 
-  let message =
-    "Your value: " + yourSharkTotal.toFixed(2) + " sharks • " +
-    "Their value: " + theirSharkTotal.toFixed(2) + " sharks – ";
+  // Display numbers in the currently selected mode
+  let yourDisplay = yourSharkTotal;
+  let theirDisplay = theirSharkTotal;
+  let unitLabel = "sharks";
 
+  if (state.mode === "frost") {
+    yourDisplay = yourSharkTotal / FROST_TO_SHARK_RATIO;
+    theirDisplay = theirSharkTotal / FROST_TO_SHARK_RATIO;
+    unitLabel = "frosts";
+  }
+
+  let message =
+    "Your value: " + yourDisplay.toFixed(2) + " " + unitLabel + " • " +
+    "Their value: " + theirDisplay.toFixed(2) + " " + unitLabel + " – ";
+
+  // Use shark totals for fairness difference (scale doesn't matter)
   if (yourSharkTotal > theirSharkTotal + 30) {
     message += "You are overpaying a lot. 🟥";
   } else if (theirSharkTotal > yourSharkTotal + 30) {
@@ -399,64 +442,28 @@ function evaluateTrade() {
 }
 
 // ----------------------------
-// SIDE MENU / CONTACT / FEEDBACK
+// MODE TOGGLE (Shark / Frost)
 // ----------------------------
 
-function initMenuAndFeedback() {
-  const menuToggle = $("#menuToggle");
-  const menuClose = $("#menuClose");
-  const sideMenu = $("#sideMenu");
-  const overlay = $("#menuOverlay");
-  const contactBtn = $("#contactEmailBtn");
-  const feedbackBtn = $("#feedbackSendBtn");
-  const feedbackInput = $("#feedbackInput");
+function initModeToggle() {
+  const sharkBtn = document.getElementById("modeShark");
+  const frostBtn = document.getElementById("modeFrost");
 
-  // TODO: change this to your real email:
-  const OWNER_EMAIL = "youremail@example.com";
-
-  function openMenu() {
-    if (sideMenu) sideMenu.classList.add("open");
-    if (overlay) overlay.classList.add("visible");
-  }
-  function closeMenu() {
-    if (sideMenu) sideMenu.classList.remove("open");
-    if (overlay) overlay.classList.remove("visible");
-  }
-
-  if (menuToggle) {
-    menuToggle.addEventListener("click", openMenu);
-  }
-  if (menuClose) {
-    menuClose.addEventListener("click", closeMenu);
-  }
-  if (overlay) {
-    overlay.addEventListener("click", closeMenu);
-  }
-
-  if (contactBtn) {
-    contactBtn.addEventListener("click", function () {
-      window.location.href =
-        "mailto:" +
-        OWNER_EMAIL +
-        "?subject=Adopt%20Me%20Value%20Question";
+  if (sharkBtn) {
+    sharkBtn.addEventListener("click", function () {
+      state.mode = "shark";
+      sharkBtn.classList.add("active");
+      if (frostBtn) frostBtn.classList.remove("active");
+      calculateAndUpdateTotals();
     });
   }
 
-  if (feedbackBtn && feedbackInput) {
-    feedbackBtn.addEventListener("click", function () {
-      const text = feedbackInput.value.trim();
-      if (!text) {
-        alert("Please type some feedback first.");
-        return;
-      }
-      const body = encodeURIComponent(text);
-      window.location.href =
-        "mailto:" +
-        OWNER_EMAIL +
-        "?subject=HighTier%20Values%20Feedback&body=" +
-        body;
-      feedbackInput.value = "";
-      alert("Feedback opened in your email app. Thanks!");
+  if (frostBtn) {
+    frostBtn.addEventListener("click", function () {
+      state.mode = "frost";
+      frostBtn.classList.add("active");
+      if (sharkBtn) sharkBtn.classList.remove("active");
+      calculateAndUpdateTotals();
     });
   }
 }
@@ -507,8 +514,8 @@ document.addEventListener("DOMContentLoaded", function () {
     evalBtn.addEventListener("click", evaluateTrade);
   }
 
-  // Menu + feedback
-  initMenuAndFeedback();
+  // Mode toggle
+  initModeToggle();
 
   // First render + totals
   renderOffers();
