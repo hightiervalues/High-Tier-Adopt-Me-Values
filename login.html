@@ -15,21 +15,41 @@
     <input id="password" type="password" placeholder="Password">
 
     <button id="loginBtn" class="btn-primary">Log In</button>
+    <button id="resetAccountsBtn" class="btn-secondary">Reset saved accounts</button>
 
     <p id="message"></p>
+    <p id="debugInfo" style="font-size:0.8rem;color:#555;"></p>
 
     <a href="signup.html">Need an account? Sign up</a>
   </div>
 
   <script>
+    function getUsers() {
+      try {
+        return JSON.parse(localStorage.getItem("users") || "[]");
+      } catch (e) {
+        return [];
+      }
+    }
+
+    function updateDebug() {
+      const users = getUsers();
+      const debug = document.getElementById("debugInfo");
+      if (users.length === 0) {
+        debug.textContent = "Users saved in this browser: 0 (go to Sign Up to create one).";
+      } else {
+        debug.textContent = "Users saved: " + users.length + 
+          " (first email: " + users[0].email + ")";
+      }
+    }
+
     document.getElementById("loginBtn").addEventListener("click", () => {
       const email = document.getElementById("email").value.trim().toLowerCase();
       const password = document.getElementById("password").value.trim();
       const message = document.getElementById("message");
 
-      let users = JSON.parse(localStorage.getItem("users") || "[]");
-
-      let user = users.find(u => u.email === email && u.password === password);
+      const users = getUsers();
+      const user = users.find(u => u.email === email && u.password === password);
 
       if (user) {
         localStorage.setItem("currentUser", JSON.stringify(user));
@@ -38,11 +58,20 @@
         setTimeout(() => {
           window.location.href = "dashboard.html";
         }, 1000);
-
       } else {
-        message.textContent = "Login failed — please try again.";
+        message.textContent = "Login failed — please try again (use the same email and password you signed up with).";
       }
     });
+
+    document.getElementById("resetAccountsBtn").addEventListener("click", () => {
+      localStorage.removeItem("users");
+      localStorage.removeItem("currentUser");
+      document.getElementById("message").textContent = "All saved accounts deleted. Go to Sign Up to create a new one.";
+      updateDebug();
+    });
+
+    // On page load
+    updateDebug();
   </script>
 
 </body>
