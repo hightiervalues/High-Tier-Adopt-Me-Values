@@ -2,8 +2,6 @@
 // ITEM DATA (Shark values)
 // =========================
 
-// value.* = shark value (1 = 1 Shark)
-// Frost values are derived in UI from shark totals.
 const ITEMS = [
   {
     id: "shadow_dragon",
@@ -135,10 +133,7 @@ const VARIANT_LABEL = {
   m: "Mega"
 };
 
-// 1 Frost = 95 Sharks (base ratio)
 const FROST_TO_SHARK_RATIO = 95;
-
-// 18 slots each side (even though we visually use 9, extra slots just unused)
 const EMPTY_OFFER = () => Array(18).fill(null);
 
 const state = {
@@ -167,13 +162,11 @@ function openPicker(side, index) {
   state.currentIndex = index;
   state.selectedItemId = null;
 
-  // Reset variant to NP
   const radios = document.querySelectorAll('input[name="variant"]');
   for (let i = 0; i < radios.length; i++) {
     radios[i].checked = radios[i].value === "np";
   }
 
-  // Default category = pets
   setCategory("pets");
 
   const modal = $("#pickerModal");
@@ -188,14 +181,12 @@ function closePicker() {
 function setCategory(cat) {
   state.currentCategory = cat;
 
-  // Tab active states
   const tabs = $all(".picker-tab");
   for (let i = 0; i < tabs.length; i++) {
     const btn = tabs[i];
     btn.classList.toggle("active", btn.dataset.category === cat);
   }
 
-  // Filter items
   const list = ITEMS.filter(item => item.category === cat);
   const container = $("#pickerItems");
   if (!container) return;
@@ -281,9 +272,7 @@ function renderSlot(slot, entry) {
 function getSelectedVariant() {
   const radios = document.querySelectorAll('input[name="variant"]');
   for (let i = 0; i < radios.length; i++) {
-    if (radios[i].checked) {
-      return radios[i].value;
-    }
+    if (radios[i].checked) return radios[i].value;
   }
   return "np";
 }
@@ -314,7 +303,6 @@ function updateTotalsUI(yourShark, theirShark) {
   const yourFrost = yourShark / FROST_TO_SHARK_RATIO;
   const theirFrost = theirShark / FROST_TO_SHARK_RATIO;
 
-  // Which unit are we showing?
   let yourDisplay = yourShark;
   let theirDisplay = theirShark;
   let unitLabel = "sharks";
@@ -325,13 +313,11 @@ function updateTotalsUI(yourShark, theirShark) {
     unitLabel = "frosts";
   }
 
-  // Top big numbers
   const summaryYour = document.getElementById("summaryYour");
   const summaryTheir = document.getElementById("summaryTheir");
   if (summaryYour) summaryYour.textContent = Math.round(yourDisplay);
   if (summaryTheir) summaryTheir.textContent = Math.round(theirDisplay);
 
-  // Center value + arrows text
   const center = document.getElementById("centerValue");
   if (center) {
     const main = center.querySelector(".center-main");
@@ -344,12 +330,10 @@ function updateTotalsUI(yourShark, theirShark) {
       if (main) main.textContent = "0";
       if (sub) sub.textContent = "Fair";
     } else if (diff > 0) {
-      // They are overpaying (win for you)
       const d = Math.round(absDiff);
       if (main) main.textContent = d.toString();
       if (sub) sub.textContent = `↑ They over by ${d} ${unitLabel}`;
     } else {
-      // You are overpaying
       const d = Math.round(absDiff);
       if (main) main.textContent = d.toString();
       if (sub) sub.textContent = `↓ You over by ${d} ${unitLabel}`;
@@ -414,7 +398,6 @@ function evaluateTrade() {
     return;
   }
 
-  // Display numbers in the currently selected mode
   let yourDisplay = yourSharkTotal;
   let theirDisplay = theirSharkTotal;
   let unitLabel = "sharks";
@@ -429,7 +412,6 @@ function evaluateTrade() {
     "Your value: " + yourDisplay.toFixed(2) + " " + unitLabel + " • " +
     "Their value: " + theirDisplay.toFixed(2) + " " + unitLabel + " – ";
 
-  // Use shark totals for fairness difference (scale doesn't matter)
   if (yourSharkTotal > theirSharkTotal + 30) {
     message += "You are overpaying a lot. 🟥";
   } else if (theirSharkTotal > yourSharkTotal + 30) {
@@ -469,10 +451,52 @@ function initModeToggle() {
 }
 
 // ----------------------------
+// THEME PICKER (Light / Silver / Gold)
+// ----------------------------
+
+function applyTheme(theme) {
+  const body = document.body;
+  body.classList.remove("theme-light", "theme-silver", "theme-gold");
+  body.classList.add("theme-" + theme);
+  try {
+    localStorage.setItem("htv-theme", theme);
+  } catch (e) {
+    // ignore
+  }
+}
+
+function initThemePicker() {
+  const overlay = document.getElementById("themeOverlay");
+  let saved = null;
+  try {
+    saved = localStorage.getItem("htv-theme");
+  } catch (e) {
+    saved = null;
+  }
+
+  if (saved) {
+    applyTheme(saved);
+    if (overlay) overlay.classList.add("hidden");
+  } else {
+    if (overlay) overlay.classList.remove("hidden");
+  }
+
+  const cards = document.querySelectorAll(".theme-card");
+  for (let i = 0; i < cards.length; i++) {
+    const card = cards[i];
+    card.addEventListener("click", function () {
+      const theme = card.dataset.theme || "light";
+      applyTheme(theme);
+      if (overlay) overlay.classList.add("hidden");
+    });
+  }
+}
+
+// ----------------------------
 // INIT
 // ----------------------------
+
 document.addEventListener("DOMContentLoaded", function () {
-  // Slot click handlers
   const slots = $all(".offer-slot");
   for (let i = 0; i < slots.length; i++) {
     const slot = slots[i];
@@ -483,7 +507,6 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
-  // Category tabs
   const tabs = $all(".picker-tab");
   for (let i = 0; i < tabs.length; i++) {
     const btn = tabs[i];
@@ -492,7 +515,6 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
-  // Picker buttons
   const pickerCancel = $("#pickerCancel");
   const pickerAdd = $("#pickerAdd");
   if (pickerCancel) {
@@ -504,20 +526,14 @@ document.addEventListener("DOMContentLoaded", function () {
     pickerAdd.addEventListener("click", handleAddToOffer);
   }
 
-  // Clear & evaluate
   const clearBtn = $("#clearTrade");
   const evalBtn = $("#evaluateBtn");
-  if (clearBtn) {
-    clearBtn.addEventListener("click", clearTrade);
-  }
-  if (evalBtn) {
-    evalBtn.addEventListener("click", evaluateTrade);
-  }
+  if (clearBtn) clearBtn.addEventListener("click", clearTrade);
+  if (evalBtn) evalBtn.addEventListener("click", evaluateTrade);
 
-  // Mode toggle
   initModeToggle();
+  initThemePicker();
 
-  // First render + totals
   renderOffers();
   updateTotalsUI(0, 0);
 });
