@@ -3,122 +3,143 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>High Tier Adopt Me Trade Calculator</title>
+  <title>High Tier Adopt Me Values</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 
 <body>
+  <!-- Top Navigation -->
   <header class="topbar">
     <div class="logo">HighTier<span>Values</span></div>
+
     <nav class="nav">
-      <a href="index.html" class="nav-link active">Trade Calc</a>
-      <a href="signup.html" class="nav-link">Sign Up</a>
-      <a href="login.html" class="nav-link">Log In</a>
+      <a href="index.html" class="nav-link active">Pets</a>
+      <a href="#trade" class="nav-link">Trade Calc</a>
       <a href="profile.html" class="nav-link">Profile</a>
+
+      <!-- When LOGGED OUT -->
+      <div id="authButtons" style="display:flex; gap:8px; margin-left:10px;">
+        <a href="signup.html" class="btn-primary" style="padding:6px 12px;">Sign Up</a>
+        <a href="login.html" class="btn-secondary" style="padding:6px 12px;">Log In</a>
+      </div>
+
+      <!-- When LOGGED IN -->
+      <div id="accountArea" style="display:none; align-items:center; gap:8px; margin-left:10px;">
+        <div id="accountSummary" style="font-size:0.8rem;"></div>
+        <button id="logoutHeaderBtn" class="btn-secondary" type="button" style="padding:4px 10px;">
+          Log out
+        </button>
+      </div>
     </nav>
   </header>
 
-  <main class="trade-page">
-    <h1 class="page-title">Adopt Me High Tier Trade Calculator</h1>
+  <!-- Main Content -->
+  <main>
+    <section class="filters">
+      <input id="searchInput" type="text" placeholder="Search pets..." class="search-box" />
 
-    <div class="trade-columns">
-      <!-- Your Offer -->
-      <section class="offer">
-        <h2>Your offer</h2>
-        <div class="slot-grid" data-side="your">
-          <!-- 18 slots -->
-          <div class="offer-slot plus" data-index="0" data-side="your"></div>
-          <div class="offer-slot" data-index="1" data-side="your"></div>
-          <div class="offer-slot" data-index="2" data-side="your"></div>
-          <div class="offer-slot" data-index="3" data-side="your"></div>
-          <div class="offer-slot" data-index="4" data-side="your"></div>
-          <div class="offer-slot" data-index="5" data-side="your"></div>
-          <div class="offer-slot" data-index="6" data-side="your"></div>
-          <div class="offer-slot" data-index="7" data-side="your"></div>
-          <div class="offer-slot" data-index="8" data-side="your"></div>
-          <div class="offer-slot" data-index="9" data-side="your"></div>
-          <div class="offer-slot" data-index="10" data-side="your"></div>
-          <div class="offer-slot" data-index="11" data-side="your"></div>
-          <div class="offer-slot" data-index="12" data-side="your"></div>
-          <div class="offer-slot" data-index="13" data-side="your"></div>
-          <div class="offer-slot" data-index="14" data-side="your"></div>
-          <div class="offer-slot" data-index="15" data-side="your"></div>
-          <div class="offer-slot" data-index="16" data-side="your"></div>
-          <div class="offer-slot" data-index="17" data-side="your"></div>
-        </div>
-      </section>
+      <select id="tierFilter" class="filter-select">
+        <option value="">All Tiers</option>
+      </select>
 
-      <!-- Their Offer -->
-      <section class="offer">
-        <h2>Their offer</h2>
-        <div class="slot-grid" data-side="their">
-          <!-- 18 slots -->
-          <div class="offer-slot plus" data-index="0" data-side="their"></div>
-          <div class="offer-slot" data-index="1" data-side="their"></div>
-          <div class="offer-slot" data-index="2" data-side="their"></div>
-          <div class="offer-slot" data-index="3" data-side="their"></div>
-          <div class="offer-slot" data-index="4" data-side="their"></div>
-          <div class="offer-slot" data-index="5" data-side="their"></div>
-          <div class="offer-slot" data-index="6" data-side="their"></div>
-          <div class="offer-slot" data-index="7" data-side="their"></div>
-          <div class="offer-slot" data-index="8" data-side="their"></div>
-          <div class="offer-slot" data-index="9" data-side="their"></div>
-          <div class="offer-slot" data-index="10" data-side="their"></div>
-          <div class="offer-slot" data-index="11" data-side="their"></div>
-          <div class="offer-slot" data-index="12" data-side="their"></div>
-          <div class="offer-slot" data-index="13" data-side="their"></div>
-          <div class="offer-slot" data-index="14" data-side="their"></div>
-          <div class="offer-slot" data-index="15" data-side="their"></div>
-          <div class="offer-slot" data-index="16" data-side="their"></div>
-          <div class="offer-slot" data-index="17" data-side="their"></div>
-        </div>
-      </section>
-    </div>
+      <select id="rarityFilter" class="filter-select">
+        <option value="">All Rarities</option>
+      </select>
+    </section>
 
-    <div class="trade-actions">
-      <button id="clearTrade" class="btn-secondary">Clear</button>
-      <button id="evaluateBtn" class="btn-primary">Evaluate Trade</button>
-    </div>
-    <p id="tradeResult" class="trade-result"></p>
+    <section id="tierTabs" class="tier-tabs"></section>
+
+    <section id="petGrid" class="pet-grid"></section>
   </main>
 
-  <!-- Picker modal -->
-  <div id="pickerModal" class="modal hidden">
-    <div class="modal-content picker">
-      <div class="picker-header">
-        <h2>Select item</h2>
-        <div class="picker-tabs">
-          <button class="picker-tab active" data-category="pets">Pets</button>
-          <button class="picker-tab" data-category="strollers">Strollers</button>
-          <button class="picker-tab" data-category="food">Food</button>
-          <button class="picker-tab" data-category="pet_wear">Pet wear</button>
-          <button class="picker-tab" data-category="vehicles">Vehicles</button>
-        </div>
-      </div>
-
-      <div class="picker-body">
-        <div id="pickerItems" class="picker-items"></div>
-
-        <div class="picker-variant">
-          <h3>Variant</h3>
-          <div class="variant-options">
-            <label><input type="radio" name="variant" value="np" checked> No potion</label>
-            <label><input type="radio" name="variant" value="r"> Ride</label>
-            <label><input type="radio" name="variant" value="f"> Fly</label>
-            <label><input type="radio" name="variant" value="fr"> Fly Ride</label>
-            <label><input type="radio" name="variant" value="n"> Neon</label>
-            <label><input type="radio" name="variant" value="m"> Mega</label>
-          </div>
-        </div>
-      </div>
-
-      <div class="picker-footer">
-        <button id="pickerCancel" class="btn-secondary">Cancel</button>
-        <button id="pickerAdd" class="btn-primary">Add to offer</button>
-      </div>
-    </div>
+  <!-- Modal -->
+  <div id="petModal" class="modal hidden">
+    <div class="modal-content" id="modalContent"></div>
+    <button id="closeModal" class="modal-close">×</button>
   </div>
 
-  <script src="trade.js"></script>
+  <!-- Trade Calculator -->
+  <section id="trade" class="trade-section">
+    <h2>Trade Calculator</h2>
+
+    <div class="trade-area">
+      <div>
+        <h3>You Give</h3>
+        <div id="giveList" class="trade-list"></div>
+        <button id="clearGive" class="btn-secondary">Clear</button>
+      </div>
+
+      <div>
+        <h3>You Get</h3>
+        <div id="getList" class="trade-list"></div>
+        <button id="clearGet" class="btn-secondary">Clear</button>
+      </div>
+    </div>
+
+    <button id="evaluateBtn" class="btn-primary">Evaluate Trade</button>
+    <p id="tradeResult" class="trade-result"></p>
+  </section>
+
+  <!-- Scripts -->
+  <script src="app.js"></script>
+
+  <!-- Authentication Header Logic -->
+  <script>
+    (function() {
+      function getCurrentUser() {
+        try {
+          return JSON.parse(localStorage.getItem("currentUser"));
+        } catch (e) {
+          return null;
+        }
+      }
+
+      function formatJoinDate(dateIso) {
+        if (!dateIso) return "";
+        const d = new Date(dateIso);
+        if (isNaN(d)) return "";
+        return d.toLocaleDateString(undefined, {
+          year: "numeric",
+          month: "short",
+          day: "numeric"
+        });
+      }
+
+      document.addEventListener("DOMContentLoaded", function() {
+        const authButtons = document.getElementById("authButtons");
+        const accountArea = document.getElementById("accountArea");
+        const accountSummary = document.getElementById("accountSummary");
+        const logoutBtn = document.getElementById("logoutHeaderBtn");
+
+        const user = getCurrentUser();
+
+        if (user) {
+          // Hide login buttons
+          authButtons.style.display = "none";
+          // Show signed-in info
+          accountArea.style.display = "flex";
+
+          const join = formatJoinDate(user.createdAt);
+          const name = user.username || user.email;
+
+          accountSummary.textContent =
+            join ? `Signed in as ${name} • Joined: ${join}` : `Signed in as ${name}`;
+
+          logoutBtn.addEventListener("click", function() {
+            localStorage.removeItem("currentUser");
+            authButtons.style.display = "flex";
+            accountArea.style.display = "none";
+            window.location.href = "index.html";
+          });
+
+        } else {
+          // Not signed in
+          authButtons.style.display = "flex";
+          accountArea.style.display = "none";
+        }
+      });
+
+    })();
+  </script>
 </body>
 </html>
