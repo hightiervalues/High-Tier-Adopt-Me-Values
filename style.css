@@ -5,9 +5,10 @@
   font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
 }
 
+/* Light creamy background like Elvebredd */
 body {
-  background: radial-gradient(circle at top, #1b1e35 0, #05060a 55%);
-  color: #f8fafc;
+  background: #f4efe6;
+  color: #3c3c3c;
 }
 
 /* HEADER */
@@ -19,168 +20,229 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 12px 18px;
-  background: linear-gradient(to right, #05060a, #101221);
-  box-shadow: 0 6px 22px rgba(0, 0, 0, 0.6);
+  padding: 12px 28px;
+  background: #f7f0e6;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+}
+
+.top-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 0.95rem;
+  color: #555;
+}
+
+.menu-icon {
+  border: none;
+  background: transparent;
+  font-size: 1.1rem;
+  cursor: pointer;
+}
+
+.game-label {
+  font-weight: 500;
 }
 
 .logo {
   font-weight: 800;
-  letter-spacing: 0.04em;
-  font-size: 1.1rem;
+  letter-spacing: 0.08em;
+  font-size: 1.4rem;
 }
 
 .logo span {
-  color: #f6c453;
+  border-bottom: 3px solid #333;
+  padding-bottom: 1px;
 }
 
 .nav {
   display: flex;
-  gap: 10px;
+  gap: 16px;
   align-items: center;
 }
 
 .nav-link {
   text-decoration: none;
-  color: #9ca3af;
+  color: #555;
   font-size: 0.9rem;
-  padding: 6px 10px;
+}
+
+.nav-link.active {
+  font-weight: 600;
+}
+
+.sign-btn {
+  padding: 6px 14px;
   border-radius: 999px;
-  transition: 0.15s;
+  background: #111;
+  color: #f9f9f9;
 }
 
-.nav-link.active,
-.nav-link:hover {
-  background: rgba(246, 196, 83, 0.12);
-  color: #f8fafc;
-}
-
-/* MAIN TRADE PAGE */
+/* MAIN LAYOUT */
 
 .trade-page {
-  max-width: 1050px;
+  max-width: 1100px;
   margin: 24px auto 40px;
   padding: 0 18px;
 }
 
-.page-title {
-  text-align: center;
-  font-size: clamp(1.8rem, 4vw, 2.4rem);
-  margin-bottom: 4px;
+.calc-shell {
+  margin: 0 auto;
 }
 
-.page-subtitle {
-  text-align: center;
-  font-size: 0.9rem;
-  color: #9ca3af;
-  margin-bottom: 18px;
-}
+/* TOP SUMMARY BANNER */
 
-/* VALUE STRIP (Shark & Frost) */
-
-.value-strip {
-  display: flex;
-  justify-content: center;
-  gap: 12px;
-  margin-bottom: 18px;
-}
-
-.value-box {
-  background: rgba(15, 17, 30, 0.85);
+.summary-banner {
+  margin: 14px auto 22px;
+  max-width: 900px;
+  padding: 18px 26px;
   border-radius: 999px;
-  padding: 6px 14px;
+  background: #fbf6ee;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.06);
   display: flex;
   align-items: center;
-  gap: 8px;
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35);
+  justify-content: space-between;
+  gap: 18px;
 }
 
-.value-label {
+.summary-side {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 90px;
+}
+
+.summary-number {
+  font-size: 2.6rem;
+  font-weight: 700;
+  color: #444;
+}
+
+.summary-label {
+  font-size: 0.8rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #777;
+}
+
+.summary-center {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+
+.win-strip {
+  display: inline-flex;
+  border-radius: 999px;
+  padding: 4px;
+  background: #e0d6c7;
   font-size: 0.8rem;
   text-transform: uppercase;
-  letter-spacing: 0.08em;
-  color: #f6c453;
+  letter-spacing: 0.12em;
 }
 
-.value-numbers {
+.win-label {
+  padding: 4px 10px;
+  border-radius: 999px;
+  color: #857a6c;
+}
+
+.win-label.active {
+  background: #f5eee4;
+  color: #555;
+  font-weight: 600;
+}
+
+.summary-divider {
   font-size: 0.8rem;
-  color: #e5e7eb;
-  display: flex;
-  align-items: center;
+  color: #8b8174;
+}
+
+.summary-divider .pipe {
+  margin: 0 5px;
+}
+
+.summary-bars {
+  width: 100%;
+  max-width: 320px;
+  height: 6px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
   gap: 4px;
+  margin-top: 4px;
 }
 
-.value-side-label {
-  font-size: 0.75rem;
-  color: #9ca3af;
+.bar {
+  border-radius: 999px;
 }
 
-.value-separator {
-  color: #4b5563;
+.your-bar {
+  background: linear-gradient(to right, #ff8a8a, #ffb3a0);
 }
 
-/* OFFERS */
+.their-bar {
+  background: linear-gradient(to right, #ffd1a3, #ffe4c2);
+}
 
-.trade-columns {
+/* BOARD CARD */
+
+.board-card {
+  margin: 0 auto;
+  margin-bottom: 18px;
+  max-width: 900px;
+  padding: 24px 32px;
+  border-radius: 40px;
+  background: #fbf6ee;
+  box-shadow: 0 15px 35px rgba(0,0,0,0.06);
+  display: grid;
+  grid-template-columns: minmax(0,1fr) auto minmax(0,1fr);
+  align-items: center;
+  gap: 30px;
+}
+
+.offer-grid-wrap {
   display: flex;
-  gap: 20px;
-  flex-wrap: wrap;
   justify-content: center;
 }
 
-.offer {
-  background: radial-gradient(circle at top left, #1f2239, #101221);
-  border-radius: 16px;
-  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.55);
-  padding: 14px;
-  flex: 1 1 320px;
-  max-width: 450px;
-}
-
-.offer h2 {
-  margin-bottom: 10px;
-  font-size: 1rem;
-}
-
-.slot-grid {
+.offer-grid {
   display: grid;
-  grid-template-columns: repeat(3, minmax(70px, 1fr));
-  gap: 8px;
+  grid-template-columns: repeat(3, 80px);
+  grid-template-rows: repeat(3, 80px);
+  gap: 6px;
 }
 
 .offer-slot {
-  background: #171928;
   border-radius: 14px;
-  min-height: 70px;
-  cursor: pointer;
-  position: relative;
+  border: 2px solid #ff8a8a;
+  background: linear-gradient(135deg, #ffe2d0, #ffe9db);
   display: flex;
   align-items: center;
   justify-content: center;
+  cursor: pointer;
+  position: relative;
   overflow: hidden;
-  border: 1px solid #262b3f;
-  transition: 0.1s;
-}
-
-.offer-slot:hover {
-  border-color: #f6c453;
 }
 
 .offer-slot.plus::before {
   content: "+";
-  font-size: 1.4rem;
-  color: #6b7280;
+  font-size: 2rem;
+  color: #f79494;
 }
 
 .offer-slot.filled {
-  background: #101221;
+  background: #fff7f0;
 }
 
 .slot-content {
   display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: 6px;
-  padding: 6px;
+  gap: 4px;
+  padding: 4px;
+  text-align: center;
 }
 
 .slot-content img {
@@ -189,22 +251,65 @@ body {
   object-fit: contain;
 }
 
-.slot-text {
-  display: flex;
-  flex-direction: column;
-  font-size: 0.75rem;
-}
-
 .slot-name {
-  font-weight: 600;
+  font-size: 0.75rem;
+  color: #555;
 }
 
 .slot-variant {
   font-size: 0.7rem;
-  color: #9ca3af;
+  color: #999;
 }
 
-/* BUTTONS / ACTIONS */
+.center-value {
+  font-size: 3.2rem;
+  font-weight: 700;
+  color: #444;
+}
+
+/* MODE TOGGLE (Shark / Frost pill) */
+
+.mode-toggle {
+  margin: 0 auto;
+  margin-bottom: 14px;
+  max-width: 400px;
+  text-align: center;
+}
+
+.mode-note {
+  font-size: 0.75rem;
+  color: #a28f7b;
+  margin-bottom: 4px;
+}
+
+.mode-pill {
+  display: inline-flex;
+  background: #ffe7d8;
+  border-radius: 999px;
+  padding: 4px;
+}
+
+.mode-btn {
+  border: none;
+  background: transparent;
+  padding: 7px 18px;
+  font-size: 0.85rem;
+  border-radius: 999px;
+  cursor: pointer;
+  color: #b65d44;
+}
+
+.mode-btn.active {
+  background: #ff8a5e;
+  color: #fff;
+}
+
+/* ACTIONS & NOTE */
+
+.trade-actions {
+  margin-top: 16px;
+  text-align: center;
+}
 
 .btn-primary,
 .btn-secondary {
@@ -213,37 +318,32 @@ body {
   padding: 7px 13px;
   font-size: 0.85rem;
   cursor: pointer;
-  margin-top: 8px;
+  margin: 0 4px;
 }
 
 .btn-primary {
-  background: linear-gradient(135deg, #f6c453, #ff4b8b);
-  color: #05060a;
+  background: #ff8a5e;
+  color: #fff;
   font-weight: 600;
 }
 
 .btn-secondary {
-  background: #101221;
-  color: #9ca3af;
-}
-
-.btn-secondary:hover {
-  background: #181b2b;
-}
-
-.trade-actions {
-  text-align: center;
-  margin-top: 16px;
-}
-
-.trade-actions button {
-  margin: 0 4px;
+  background: #f1e1cf;
+  color: #6b5b4a;
 }
 
 .trade-result {
   margin-top: 10px;
   text-align: center;
   font-size: 0.9rem;
+  color: #574b3f;
+}
+
+.bottom-note {
+  margin-top: 24px;
+  font-size: 0.75rem;
+  text-align: center;
+  color: #7c7166;
 }
 
 /* MODAL PICKER */
@@ -251,7 +351,7 @@ body {
 .modal {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.6);
+  background: rgba(0, 0, 0, 0.45);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -263,12 +363,12 @@ body {
 }
 
 .modal-content.picker {
-  background: #111320;
+  background: #fdf6ee;
   border-radius: 18px;
-  padding: 14px 14px 12px;
+  padding: 16px 16px 14px;
   width: 92%;
   max-width: 540px;
-  box-shadow: 0 24px 50px rgba(0, 0, 0, 0.85);
+  box-shadow: 0 24px 50px rgba(0, 0, 0, 0.2);
   display: flex;
   flex-direction: column;
   gap: 10px;
@@ -277,6 +377,7 @@ body {
 .picker-header h2 {
   margin-bottom: 6px;
   font-size: 1rem;
+  color: #4b3f35;
 }
 
 .picker-tabs {
@@ -290,14 +391,14 @@ body {
   border-radius: 999px;
   padding: 5px 10px;
   font-size: 0.8rem;
-  background: #181b2b;
-  color: #9ca3af;
+  background: #f1e1cf;
+  color: #6c5c4a;
   cursor: pointer;
 }
 
 .picker-tab.active {
-  background: linear-gradient(135deg, #f6c453, #ff4b8b);
-  color: #05060a;
+  background: #ff8a5e;
+  color: #fff;
 }
 
 .picker-body {
@@ -316,7 +417,7 @@ body {
 
 .picker-item {
   border: none;
-  background: #171928;
+  background: #f8e7d7;
   border-radius: 12px;
   padding: 8px;
   display: flex;
@@ -325,8 +426,8 @@ body {
   gap: 4px;
   cursor: pointer;
   font-size: 0.8rem;
-  color: #e5e7eb;
-  border: 1px solid #262b3f;
+  color: #4b3f35;
+  border: 1px solid #f0c2a6;
 }
 
 .picker-item img {
@@ -336,13 +437,13 @@ body {
 }
 
 .picker-item.selected {
-  border-color: #f6c453;
-  box-shadow: 0 0 0 1px #f6c453;
+  border-color: #ff8a5e;
+  box-shadow: 0 0 0 1px #ff8a5e;
 }
 
 .picker-empty {
   font-size: 0.85rem;
-  color: #9ca3af;
+  color: #8b7a6a;
   text-align: center;
   padding: 10px 0;
 }
@@ -350,6 +451,7 @@ body {
 .picker-variant h3 {
   font-size: 0.9rem;
   margin-bottom: 4px;
+  color: #4b3f35;
 }
 
 .variant-options {
@@ -357,7 +459,7 @@ body {
   flex-wrap: wrap;
   gap: 10px;
   font-size: 0.8rem;
-  color: #e5e7eb;
+  color: #4b3f35;
 }
 
 .picker-footer {
@@ -368,17 +470,29 @@ body {
 
 /* RESPONSIVE */
 
-@media (max-width: 700px) {
-  .trade-columns {
-    flex-direction: column;
+@media (max-width: 850px) {
+  .board-card {
+    grid-template-columns: 1fr;
+    gap: 16px;
   }
 
-  .slot-grid {
-    grid-template-columns: repeat(3, minmax(60px, 1fr));
+  .offer-grid {
+    grid-template-columns: repeat(3, 70px);
+    grid-template-rows: repeat(3, 70px);
   }
 
-  .value-strip {
+  .center-value {
+    text-align: center;
+  }
+}
+
+@media (max-width: 600px) {
+  .summary-banner {
     flex-direction: column;
-    align-items: center;
+    border-radius: 30px;
+  }
+
+  .nav {
+    gap: 10px;
   }
 }
