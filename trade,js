@@ -1,0 +1,273 @@
+// Simple item data – you can add more later.
+// icon paths assume: assets/icons/<file>.png
+const ITEMS = [
+  {
+    id: "shadow_dragon",
+    name: "Shadow Dragon",
+    category: "pets",
+    icon: "assets/icons/shadow_dragon.png",
+    value: { np: 800, r: 820, f: 830, fr: 850, n: 1600, m: 2600 }
+  },
+  {
+    id: "frost_dragon",
+    name: "Frost Dragon",
+    category: "pets",
+    icon: "assets/icons/frost_dragon.png",
+    value: { np: 700, r: 720, f: 730, fr: 750, n: 1400, m: 2200 }
+  },
+  {
+    id: "bat_dragon",
+    name: "Bat Dragon",
+    category: "pets",
+    icon: "assets/icons/bat_dragon.png",
+    value: { np: 780, r: 800, f: 810, fr: 830, n: 1550, m: 2500 }
+  },
+  {
+    id: "owl",
+    name: "Owl",
+    category: "pets",
+    icon: "assets/icons/owl.png",
+    value: { np: 600, r: 620, f: 630, fr: 650, n: 1200, m: 1900 }
+  },
+  {
+    id: "parrot",
+    name: "Parrot",
+    category: "pets",
+    icon: "assets/icons/parrot.png",
+    value: { np: 650, r: 670, f: 680, fr: 700, n: 1300, m: 2000 }
+  },
+  // add more items here, and later other categories like strollers, food, etc.
+];
+
+const VARIANT_LABEL = {
+  np: "NP",
+  r: "R",
+  f: "F",
+  fr: "FR",
+  n: "Neon",
+  m: "Mega"
+};
+
+// 18 slots each side
+const EMPTY_OFFER = () => Array(18).fill(null);
+
+const state = {
+  your: EMPTY_OFFER(),
+  their: EMPTY_OFFER(),
+  currentSide: null,
+  currentIndex: null,
+  currentCategory: "pets",
+  selectedItemId: null
+};
+
+function $(sel) {
+  return document.querySelector(sel);
+}
+function $all(sel) {
+  return Array.from(document.querySelectorAll(sel));
+}
+
+function openPicker(side, index) {
+  state.currentSide = side;
+  state.currentIndex = index;
+  state.selectedItemId = null;
+
+  // Reset selection
+  const radios = document.querySelectorAll('input[name="variant"]');
+  radios.forEach(r => r.checked = r.value === "np");
+
+  // Default to pets
+  setCategory("pets");
+
+  $("#pickerModal").classList.remove("hidden");
+}
+
+function closePicker() {
+  $("#pickerModal").classList.add("hidden");
+}
+
+function setCategory(cat) {
+  state.currentCategory = cat;
+
+  // Tab active states
+  $all(".picker-tab").forEach(btn => {
+    btn.classList.toggle("active", btn.dataset.category === cat);
+  });
+
+  // Filter items
+  const list = ITEMS.filter(item => item.category === cat);
+  const container = $("#pickerItems");
+  container.innerHTML = "";
+
+  if (list.length === 0) {
+    container.innerHTML = `<p class="picker-empty">No items in this category yet.</p>`;
+    return;
+  }
+
+  list.forEach(item => {
+    const card = document.createElement("button");
+    card.type = "button";
+    card.className = "picker-item";
+    card.dataset.id = item.id;
+    card.innerHTML = `
+      <img src="${item.icon}" alt="${item.name}" />
+      <span>${item.name}</span>
+    `;
+    card.addEventListener("click", () => {
+      state.selectedItemId = item.id;
+      // highlight selected
+      $all(".picker-item").forEach(i => i.classList.remove("selected"));
+      card.classList.add("selected");
+    });
+    container.appendChild(card);
+  });
+}
+
+function renderOffers() {
+  // render your side
+  $all('.offer-slot[data-side="your"]').forEach(slot => {
+    const index = Number(slot.dataset.index);
+    const entry = state.your[index];
+    renderSlot(slot, entry);
+  });
+
+  // render their side
+  $all('.offer-slot[data-side="their"]').forEach(slot => {
+    const index = Number(slot.dataset.index);
+    const entry = state.their[index];
+    renderSlot(slot, entry);
+  });
+}
+
+function renderSlot(slot, entry) {
+  slot.innerHTML = "";
+  slot.classList.remove("filled");
+
+  if (!entry) {
+    // empty slot, maybe show + for the very first one if it has class 'plus'
+    if (slot.classList.contains("plus")) {
+      const plusDiv = document.createElement("div");
+      plusDiv.className = "slot-plus";
+      plusDiv.textContent = "+";
+      slot.appendChild(plusDiv);
+    }
+    return;
+  }
+
+  slot.classList.add("filled");
+  const item = ITEMS.find(i => i.id === entry.itemId);
+  if (!item) return;
+
+  const wrap = document.createElement("div");
+  wrap.className = "slot-content";
+  wrap.innerHTML = `
+    <img src="${item.icon}" alt="${item.name}" />
+    <div class="slot-text">
+      <span class="slot-name">${item.name}</span>
+      <span class="slot-variant">${VARIANT_LABEL[entry.variant] || ""}</span>
+    </div>
+  `;
+  slot.appendChild(wrap);
+}
+
+function getSelectedVariant() {
+  const radio = document.querySelector('input[name="variant"]:checked');
+  return radio ? radio.value : "np";
+}
+
+function handleAddToOffer() {
+  if (!state.selectedItemId) {
+    alert("Select an item first.");
+    return;
+  }
+  const variant = getSelectedVariant();
+
+  const sideArray = state.currentSide === "your" ? state.your : state.their;
+  sideArray[state.currentIndex] = {
+    itemId: state.selectedItemId,
+    variant
+  };
+
+  renderOffers();
+  closePicker();
+}
+
+function clearTrade() {
+  state.your = EMPTY_OFFER();
+  state.their = EMPTY_OFFER();
+  renderOffers();
+  $("#tradeResult").textContent = "";
+}
+
+function evaluateTrade() {
+  let yourTotal = 0;
+  let theirTotal = 0;
+
+  state.your.forEach(entry => {
+    if (!entry) return;
+    const item = ITEMS.find(i => i.id === entry.itemId);
+    if (!item) return;
+    const v = item.value[entry.variant] || 0;
+    yourTotal += v;
+  });
+
+  state.their.forEach(entry => {
+    if (!entry) return;
+    const item = ITEMS.find(i => i.id === entry.itemId);
+    if (!item) return;
+    const v = item.value[entry.variant] || 0;
+    theirTotal += v;
+  });
+
+  const resultEl = $("#tradeResult");
+  if (yourTotal === 0 && theirTotal === 0) {
+    resultEl.textContent = "Add some items to both offers to evaluate.";
+    return;
+  }
+
+  let message = `Your value: ${yourTotal} • Their value: ${theirTotal} – `;
+
+  if (yourTotal > theirTotal + 30) {
+    message += "You are overpaying a lot. 🟥";
+  } else if (theirTotal > yourTotal + 30) {
+    message += "They are over. This looks like a win for you. 🟩";
+  } else {
+    message += "This is around fair. 🟨";
+  }
+
+  resultEl.textContent = message;
+}
+
+// --------------------
+// INIT
+// --------------------
+document.addEventListener("DOMContentLoaded", () => {
+  // Slot click listeners
+  $all(".offer-slot").forEach(slot => {
+    slot.addEventListener("click", () => {
+      const side = slot.dataset.side;
+      const index = Number(slot.dataset.index);
+      openPicker(side, index);
+    });
+  });
+
+  // Category tabs
+  $all(".picker-tab").forEach(btn => {
+    btn.addEventListener("click", () => {
+      setCategory(btn.dataset.category);
+    });
+  });
+
+  // Picker buttons
+  $("#pickerCancel").addEventListener("click", () => {
+    closePicker();
+  });
+  $("#pickerAdd").addEventListener("click", handleAddToOffer);
+
+  // Clear & evaluate
+  $("#clearTrade").addEventListener("click", clearTrade);
+  $("#evaluateBtn").addEventListener("click", evaluateTrade);
+
+  // Initial render
+  renderOffers();
+});
