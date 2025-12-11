@@ -19,14 +19,20 @@
   </div>
 
   <script>
-    const user = JSON.parse(localStorage.getItem("currentUser"));
-
-    if (!user) {
-      window.location.href = "login.html";
+    let user = null;
+    try {
+      user = JSON.parse(localStorage.getItem("currentUser"));
+    } catch (e) {
+      user = null;
     }
 
-    document.getElementById("welcomeUser").textContent =
-      "Logged in as: " + user.username + " (" + user.email + ")";
+    if (!user) {
+      // Not logged in, go to login.
+      window.location.href = "login.html";
+    } else {
+      document.getElementById("welcomeUser").textContent =
+        "Logged in as: " + user.username + " (" + user.email + ")";
+    }
 
     document.getElementById("logoutBtn").addEventListener("click", () => {
       localStorage.removeItem("currentUser");
