@@ -4,6 +4,12 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>High Tier Adopt Me Values</title>
+
+  <!-- Google Fonts for nicer font options -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Poppins:wght@400;600;700&family=Fredoka:wght@400;600&display=swap" rel="stylesheet">
+
   <link rel="stylesheet" href="style.css" />
 </head>
 
@@ -17,16 +23,33 @@
       <a href="#trade" class="nav-link">Trade Calc</a>
       <a href="profile.html" class="nav-link">Profile</a>
 
+      <!-- Theme + Font controls -->
+      <div class="toolbar">
+        <button id="themeToggle" class="icon-button" type="button" title="Toggle light / dark">
+          🌙
+        </button>
+
+        <select id="fontSelect" class="font-select" title="Choose font">
+          <option value="inter">Inter</option>
+          <option value="poppins">Poppins</option>
+          <option value="fredoka">Fredoka</option>
+        </select>
+      </div>
+
       <!-- When LOGGED OUT -->
-      <div id="authButtons" style="display:flex; gap:8px; margin-left:10px;">
-        <a href="signup.html" class="btn-primary" style="padding:6px 12px;">Sign Up</a>
-        <a href="login.html" class="btn-secondary" style="padding:6px 12px;">Log In</a>
+      <div id="authButtons" class="auth-buttons">
+        <a href="signup.html" class="btn-primary">Sign Up</a>
+        <a href="login.html" class="btn-secondary">Log In</a>
       </div>
 
       <!-- When LOGGED IN -->
-      <div id="accountArea" style="display:none; align-items:center; gap:8px; margin-left:10px;">
-        <div id="accountSummary" style="font-size:0.8rem;"></div>
-        <button id="logoutHeaderBtn" class="btn-secondary" type="button" style="padding:4px 10px;">
+      <div id="accountArea" class="account-area">
+        <div id="accountAvatar" class="avatar-circle"></div>
+        <div class="account-text">
+          <div id="accountSummary" class="account-summary"></div>
+          <a href="profile.html" class="account-link">View Profile</a>
+        </div>
+        <button id="logoutHeaderBtn" class="btn-secondary btn-small" type="button">
           Log out
         </button>
       </div>
@@ -80,10 +103,10 @@
     <p id="tradeResult" class="trade-result"></p>
   </section>
 
-  <!-- Scripts -->
+  <!-- Main app logic -->
   <script src="app.js"></script>
 
-  <!-- Authentication Header Logic -->
+  <!-- Theme, font, header auth logic -->
   <script>
     (function() {
       function getCurrentUser() {
@@ -105,25 +128,85 @@
         });
       }
 
+      function firstLetter(name, email) {
+        const source = name || email || "";
+        return source.trim().charAt(0).toUpperCase() || "?";
+      }
+
+      function applyTheme(theme) {
+        const body = document.body;
+        if (theme === "dark") {
+          body.classList.add("dark-theme");
+        } else {
+          body.classList.remove("dark-theme");
+        }
+        localStorage.setItem("htv_theme", theme);
+      }
+
+      function applyFont(fontKey) {
+        const root = document.documentElement;
+        let stack = '"Inter", system-ui, -apple-system, BlinkMacSystemFont, sans-serif';
+        if (fontKey === "poppins") {
+          stack = '"Poppins", system-ui, -apple-system, BlinkMacSystemFont, sans-serif';
+        } else if (fontKey === "fredoka") {
+          stack = '"Fredoka", system-ui, -apple-system, BlinkMacSystemFont, sans-serif';
+        }
+        root.style.setProperty("--font-main", stack);
+        localStorage.setItem("htv_font", fontKey);
+      }
+
       document.addEventListener("DOMContentLoaded", function() {
         const authButtons = document.getElementById("authButtons");
         const accountArea = document.getElementById("accountArea");
         const accountSummary = document.getElementById("accountSummary");
         const logoutBtn = document.getElementById("logoutHeaderBtn");
+        const avatar = document.getElementById("accountAvatar");
+        const themeToggle = document.getElementById("themeToggle");
+        const fontSelect = document.getElementById("fontSelect");
 
+        // Theme init
+        const savedTheme = localStorage.getItem("htv_theme") || "light";
+        applyTheme(savedTheme);
+        if (themeToggle) {
+          themeToggle.textContent = savedTheme === "dark" ? "☀️" : "🌙";
+          themeToggle.addEventListener("click", () => {
+            const current = document.body.classList.contains("dark-theme") ? "dark" : "light";
+            const next = current === "dark" ? "light" : "dark";
+            applyTheme(next);
+            themeToggle.textContent = next === "dark" ? "☀️" : "🌙";
+          });
+        }
+
+        // Font init
+        const savedFont = localStorage.getItem("htv_font") || "inter";
+        applyFont(savedFont);
+        if (fontSelect) {
+          fontSelect.value = savedFont;
+          fontSelect.addEventListener("change", () => {
+            applyFont(fontSelect.value);
+          });
+        }
+
+        // Auth header init
         const user = getCurrentUser();
 
         if (user) {
-          // Hide login buttons
           authButtons.style.display = "none";
-          // Show signed-in info
           accountArea.style.display = "flex";
 
           const join = formatJoinDate(user.createdAt);
           const name = user.username || user.email;
-
           accountSummary.textContent =
             join ? `Signed in as ${name} • Joined: ${join}` : `Signed in as ${name}`;
+
+          // Avatar: prefer profile picture if set, else first letter
+          avatar.textContent = "";
+          avatar.style.backgroundImage = "";
+          if (user.avatarDataUrl) {
+            avatar.style.backgroundImage = "url(" + user.avatarDataUrl + ")";
+          } else {
+            avatar.textContent = firstLetter(user.username, user.email);
+          }
 
           logoutBtn.addEventListener("click", function() {
             localStorage.removeItem("currentUser");
@@ -131,14 +214,11 @@
             accountArea.style.display = "none";
             window.location.href = "index.html";
           });
-
         } else {
-          // Not signed in
           authButtons.style.display = "flex";
           accountArea.style.display = "none";
         }
       });
-
     })();
   </script>
 </body>
