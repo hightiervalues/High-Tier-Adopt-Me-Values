@@ -15,11 +15,20 @@
     <nav class="nav">
       <a href="index.html" class="nav-link active">Pets</a>
       <a href="#trade" class="nav-link">Trade Calc</a>
+      <a href="profile.html" class="nav-link">Profile</a>
 
-      <!-- AUTH BUTTONS -->
+      <!-- When LOGGED OUT -->
       <div id="authButtons" style="display:flex; gap:8px; margin-left:10px;">
         <a href="signup.html" class="btn-primary" style="padding:6px 12px;">Sign Up</a>
         <a href="login.html" class="btn-secondary" style="padding:6px 12px;">Log In</a>
+      </div>
+
+      <!-- When LOGGED IN -->
+      <div id="accountArea" style="display:none; align-items:center; gap:8px; margin-left:10px;">
+        <div id="accountSummary" style="font-size:0.8rem;"></div>
+        <button id="logoutHeaderBtn" class="btn-secondary" type="button" style="padding:4px 10px;">
+          Log out
+        </button>
       </div>
     </nav>
   </header>
@@ -73,5 +82,64 @@
 
   <!-- Scripts -->
   <script src="app.js"></script>
+
+  <!-- Authentication Header Logic -->
+  <script>
+    (function() {
+      function getCurrentUser() {
+        try {
+          return JSON.parse(localStorage.getItem("currentUser"));
+        } catch (e) {
+          return null;
+        }
+      }
+
+      function formatJoinDate(dateIso) {
+        if (!dateIso) return "";
+        const d = new Date(dateIso);
+        if (isNaN(d)) return "";
+        return d.toLocaleDateString(undefined, {
+          year: "numeric",
+          month: "short",
+          day: "numeric"
+        });
+      }
+
+      document.addEventListener("DOMContentLoaded", function() {
+        const authButtons = document.getElementById("authButtons");
+        const accountArea = document.getElementById("accountArea");
+        const accountSummary = document.getElementById("accountSummary");
+        const logoutBtn = document.getElementById("logoutHeaderBtn");
+
+        const user = getCurrentUser();
+
+        if (user) {
+          // Hide login buttons
+          authButtons.style.display = "none";
+          // Show signed-in info
+          accountArea.style.display = "flex";
+
+          const join = formatJoinDate(user.createdAt);
+          const name = user.username || user.email;
+
+          accountSummary.textContent =
+            join ? `Signed in as ${name} • Joined: ${join}` : `Signed in as ${name}`;
+
+          logoutBtn.addEventListener("click", function() {
+            localStorage.removeItem("currentUser");
+            authButtons.style.display = "flex";
+            accountArea.style.display = "none";
+            window.location.href = "index.html";
+          });
+
+        } else {
+          // Not signed in
+          authButtons.style.display = "flex";
+          accountArea.style.display = "none";
+        }
+      });
+
+    })();
+  </script>
 </body>
 </html>
