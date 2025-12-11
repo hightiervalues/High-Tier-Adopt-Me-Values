@@ -8,7 +8,7 @@
 </head>
 
 <body>
-  <!-- Top Navigation similar to Elvebredd -->
+  <!-- Top Navigation (Elvebredd-style) -->
   <header class="topbar">
     <div class="top-left">
       <button class="menu-icon">☰</button>
@@ -26,6 +26,7 @@
 
   <main class="trade-page">
     <div class="calc-shell">
+
       <!-- Top result strip -->
       <section class="summary-banner">
         <div class="summary-side">
@@ -56,8 +57,9 @@
         </div>
       </section>
 
-      <!-- Main board: two 3x3 grids + center value -->
+      <!-- Main board: two 3x3 grids + center difference -->
       <section class="board-card">
+        <!-- Your grid -->
         <div class="offer-grid-wrap">
           <div class="offer-grid" data-side="your">
             <div class="offer-slot plus" data-index="0" data-side="your"></div>
@@ -72,10 +74,13 @@
           </div>
         </div>
 
-        <div class="center-value">
-          <span id="centerValue">0</span>
+        <!-- Center difference value -->
+        <div class="center-value" id="centerValue">
+          <div class="center-main">0</div>
+          <div class="center-sub">Fair</div>
         </div>
 
+        <!-- Their grid -->
         <div class="offer-grid-wrap">
           <div class="offer-grid" data-side="their">
             <div class="offer-slot plus" data-index="0" data-side="their"></div>
@@ -91,7 +96,7 @@
         </div>
       </section>
 
-      <!-- Shark/Frost toggle pill like at bottom of screenshot -->
+      <!-- Shark / Frost toggle pill -->
       <section class="mode-toggle">
         <div class="mode-note">RECOMMENDED</div>
         <div class="mode-pill">
@@ -100,7 +105,7 @@
         </div>
       </section>
 
-      <!-- Actions + result text (from your JS) -->
+      <!-- Buttons + evaluation text -->
       <div class="trade-actions">
         <button id="clearTrade" class="btn-secondary">Clear</button>
         <button id="evaluateBtn" class="btn-primary">Evaluate Trade</button>
@@ -108,12 +113,12 @@
       <p id="tradeResult" class="trade-result"></p>
 
       <p class="bottom-note">
-        Use this value calculator to compare Adopt Me trades. Add pets/items on each side and evaluate before trading in Roblox.
+        Use this value calculator to compare Adopt Me trades. Add pets/items on each side and evaluate before you trade in Roblox.
       </p>
     </div>
   </main>
 
-  <!-- Picker modal (unchanged logic, just styled) -->
+  <!-- Picker modal -->
   <div id="pickerModal" class="modal hidden">
     <div class="modal-content picker">
       <div class="picker-header">
