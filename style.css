@@ -1,486 +1,317 @@
-/* ------------------------------
-   GLOBAL: COLORS & FONT
---------------------------------*/
-:root {
-  --bg: #f5f5f5;
-  --bg-card: #ffffff;
-  --bg-elevated: #ffffffdd;
-  --text: #222222;
-  --text-muted: #555555;
-  --accent: #0095ff;
-  --accent-soft: #e3f3ff;
-  --border-subtle: #dddddd;
-  --shadow-soft: 0 4px 10px #00000020;
-  --font-main: "Inter", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
-}
-
-body.dark-theme {
-  --bg: #05060a;
-  --bg-card: #12141c;
-  --bg-elevated: #181b25;
-  --text: #f5f5f5;
-  --text-muted: #c0c4d0;
-  --accent: #4aa8ff;
-  --accent-soft: #16263a;
-  --border-subtle: #333849;
-  --shadow-soft: 0 6px 16px #00000080;
-}
-
-/* ------------------------------
-   RESET & BASE
---------------------------------*/
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Inter", sans-serif;
 }
 
 body {
-  background: var(--bg);
-  color: var(--text);
-  line-height: 1.4;
-  font-family: var(--font-main);
+  background: #f4f4f7;
+  color: #222;
 }
 
-/* ------------------------------
-   HEADER / NAVIGATION
---------------------------------*/
+/* HEADER */
+
 .topbar {
   width: 100%;
-  background: var(--bg-card);
+  background: #ffffff;
   padding: 10px 18px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  box-shadow: var(--shadow-soft);
+  box-shadow: 0 2px 8px #00000020;
   position: sticky;
   top: 0;
   z-index: 50;
 }
 
 .logo {
-  font-size: 1.4rem;
+  font-size: 1.3rem;
   font-weight: 700;
 }
+
 .logo span {
-  color: var(--accent);
+  color: #0095ff;
 }
 
 .nav {
   display: flex;
-  align-items: center;
-  gap: 14px;
+  gap: 10px;
 }
 
 .nav-link {
   text-decoration: none;
-  color: var(--text-muted);
+  color: #555;
   font-size: 0.9rem;
-  font-weight: 500;
   padding: 6px 10px;
-  border-radius: 999px;
-  transition: 0.2s ease;
+  border-radius: 6px;
 }
+
 .nav-link:hover {
-  background: var(--accent-soft);
-  color: var(--accent);
+  background: #eee;
 }
 
 .nav-link.active {
-  background: var(--accent);
+  background: #0095ff;
   color: white;
 }
 
-/* toolbar: theme + font */
-.toolbar {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  margin-left: 8px;
-}
+/* BUTTONS */
 
-.icon-button {
-  border: none;
-  background: var(--accent-soft);
-  color: var(--accent);
-  border-radius: 999px;
-  padding: 6px 8px;
-  cursor: pointer;
-  font-size: 0.95rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-.icon-button:hover {
-  filter: brightness(1.05);
-}
-
-.font-select {
-  border-radius: 999px;
-  border: 1px solid var(--border-subtle);
-  padding: 4px 10px;
-  font-size: 0.8rem;
-  background: var(--bg-card);
-  color: var(--text);
-}
-
-/* Buttons */
 .btn-primary {
-  background: var(--accent);
+  background: #0095ff;
   color: white;
-  padding: 6px 14px;
-  border-radius: 999px;
-  text-decoration: none;
-  cursor: pointer;
   border: none;
+  padding: 8px 16px;
+  border-radius: 8px;
+  cursor: pointer;
   font-size: 0.9rem;
-  transition: 0.2s;
 }
+
 .btn-primary:hover {
-  filter: brightness(1.05);
+  background: #007ad0;
 }
 
 .btn-secondary {
-  background: var(--accent-soft);
-  color: var(--accent);
-  padding: 6px 14px;
-  border-radius: 999px;
-  text-decoration: none;
-  cursor: pointer;
+  background: #e0e0e0;
+  color: #222;
   border: none;
+  padding: 8px 16px;
+  border-radius: 8px;
+  cursor: pointer;
   font-size: 0.9rem;
-  transition: 0.2s;
 }
+
 .btn-secondary:hover {
-  filter: brightness(1.05);
+  background: #cccccc;
 }
 
-.btn-small {
-  font-size: 0.8rem;
-  padding: 4px 10px;
+/* MAIN TRADE PAGE */
+
+.trade-page {
+  max-width: 1000px;
+  margin: 24px auto;
+  padding: 0 16px 40px;
 }
 
-/* Auth buttons + account area */
-.auth-buttons {
+.page-title {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.trade-columns {
   display: flex;
-  gap: 6px;
-  margin-left: 10px;
+  gap: 20px;
+  flex-wrap: wrap;
+  justify-content: center;
 }
 
-.account-area {
-  display: none;
-  align-items: center;
+.offer {
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px #00000015;
+  padding: 14px;
+  flex: 1 1 320px;
+  max-width: 450px;
+}
+
+.offer h2 {
+  margin-bottom: 10px;
+  font-size: 1rem;
+}
+
+.slot-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(70px, 1fr));
   gap: 8px;
-  margin-left: 10px;
 }
 
-.avatar-circle {
-  width: 32px;
-  height: 32px;
-  border-radius: 999px;
-  background: var(--accent-soft);
-  color: var(--accent);
+.offer-slot {
+  background: #f3f3f7;
+  border-radius: 10px;
+  min-height: 70px;
+  cursor: pointer;
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 0.9rem;
-  font-weight: 600;
-  background-size: cover;
-  background-position: center;
   overflow: hidden;
 }
 
-.account-text {
+.offer-slot.plus::before {
+  content: "+";
+  font-size: 1.4rem;
+  color: #999;
+}
+
+.offer-slot.filled {
+  background: #ffffff;
+  border: 1px solid #ddd;
+}
+
+.slot-content {
   display: flex;
-  flex-direction: column;
-  gap: 2px;
+  align-items: center;
+  gap: 6px;
+  padding: 6px;
 }
 
-.account-summary {
-  font-size: 0.8rem;
-  color: var(--text);
-}
-
-.account-link {
-  font-size: 0.75rem;
-  color: var(--accent);
-  text-decoration: none;
-}
-.account-link:hover {
-  text-decoration: underline;
-}
-
-/* ------------------------------
-   FILTER BAR
---------------------------------*/
-.filters {
-  display: flex;
-  gap: 12px;
-  padding: 16px 18px;
-  flex-wrap: wrap;
-}
-
-.search-box {
-  padding: 8px 10px;
-  font-size: 0.95rem;
-  width: 200px;
-  border-radius: 999px;
-  border: 1px solid var(--border-subtle);
-  background: var(--bg-card);
-  color: var(--text);
-}
-
-.filter-select {
-  padding: 8px 10px;
-  font-size: 0.95rem;
-  border-radius: 999px;
-  border: 1px solid var(--border-subtle);
-  background: var(--bg-card);
-  color: var(--text);
-}
-
-/* ------------------------------
-   TIER TABS
---------------------------------*/
-.tier-tabs {
-  display: flex;
-  gap: 8px;
-  padding: 0 18px 10px;
-  overflow-x: auto;
-}
-
-.tier-tabs button {
-  padding: 6px 12px;
-  border-radius: 999px;
-  border: none;
-  background: var(--accent-soft);
-  cursor: pointer;
-  font-size: 0.85rem;
-  color: var(--text-muted);
-  transition: 0.2s;
-}
-
-.tier-tabs button.active {
-  background: var(--accent);
-  color: white;
-}
-
-/* ------------------------------
-   PET GRID
---------------------------------*/
-.pet-grid {
-  padding: 18px;
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(135px, 1fr));
-  gap: 16px;
-}
-
-.pet-card {
-  background: var(--bg-card);
-  padding: 10px;
-  border-radius: 14px;
-  text-align: center;
-  box-shadow: var(--shadow-soft);
-  cursor: pointer;
-  transition: 0.18s;
-  position: relative;
-}
-.pet-card:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 6px 16px #00000040;
-}
-
-.pet-card img {
-  width: 90px;
-  height: 90px;
+.slot-content img {
+  width: 40px;
+  height: 40px;
   object-fit: contain;
 }
 
-.pet-name {
+.slot-text {
+  display: flex;
+  flex-direction: column;
+  font-size: 0.75rem;
+}
+
+.slot-name {
   font-weight: 600;
-  font-size: 0.95rem;
-  margin-top: 8px;
 }
 
-/* Rarity badge */
-.rarity-badge {
-  display: inline-block;
-  padding: 2px 8px;
-  border-radius: 999px;
+.slot-variant {
   font-size: 0.7rem;
-  margin-top: 4px;
+  color: #555;
 }
 
-/* Example rarity colors (if your JS outputs these classes) */
-.rarity-common {
-  background: #e0e0e0;
-  color: #333;
-}
-.rarity-uncommon {
-  background: #c8f7c5;
-  color: #145a32;
-}
-.rarity-rare {
-  background: #c5e5ff;
-  color: #154360;
-}
-.rarity-ultra-rare {
-  background: #f9e0ff;
-  color: #6c3483;
-}
-.rarity-legendary {
-  background: linear-gradient(135deg, #ffb347, #ff6f61);
-  color: #3b1b00;
+/* trade actions */
+
+.trade-actions {
+  margin-top: 16px;
+  display: flex;
+  justify-content: center;
+  gap: 10px;
 }
 
-/* ------------------------------
-   MODAL
---------------------------------*/
+.trade-result {
+  margin-top: 10px;
+  text-align: center;
+  font-weight: 500;
+}
+
+/* MODAL PICKER */
+
 .modal {
   position: fixed;
   inset: 0;
   background: #00000060;
   display: flex;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
 }
+
 .modal.hidden {
   display: none;
 }
 
-.modal-content {
-  background: var(--bg-card);
-  padding: 24px;
-  border-radius: 16px;
-  max-width: 380px;
+.modal-content.picker {
+  background: #ffffff;
   width: 90%;
-  box-shadow: 0 10px 24px #00000080;
-  text-align: center;
-}
-
-.modal-close {
-  position: absolute;
-  right: 18px;
-  top: 18px;
-  font-size: 2rem;
-  background: none;
-  border: none;
-  cursor: pointer;
-  color: var(--text);
-}
-
-/* ------------------------------
-   TRADE CALCULATOR
---------------------------------*/
-.trade-section {
-  margin: 26px 18px 40px;
-  background: var(--bg-card);
-  padding: 20px;
+  max-width: 520px;
   border-radius: 14px;
-  box-shadow: var(--shadow-soft);
-}
-
-.trade-area {
-  display: flex;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  gap: 18px;
-}
-
-.trade-area h3 {
-  margin-bottom: 8px;
-}
-
-.trade-list {
-  min-height: 100px;
-  padding: 10px;
-  background: var(--bg);
-  border-radius: 10px;
-  border: 1px dashed var(--border-subtle);
-}
-
-.trade-result {
-  margin-top: 12px;
-  font-weight: 500;
-}
-
-/* ------------------------------
-   AUTH / LOGIN / SIGNUP / PROFILE
---------------------------------*/
-.auth-container {
-  max-width: 380px;
-  margin: 60px auto;
-  padding: 22px;
-  background: var(--bg-elevated);
-  border-radius: 16px;
-  box-shadow: var(--shadow-soft);
+  box-shadow: 0 8px 20px #00000080;
+  padding: 16px;
   display: flex;
   flex-direction: column;
   gap: 12px;
+}
+
+.picker-header h2 {
+  margin-bottom: 8px;
+}
+
+.picker-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.picker-tab {
+  border: none;
+  background: #eeeeee;
+  padding: 6px 10px;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  cursor: pointer;
+}
+
+.picker-tab.active {
+  background: #0095ff;
+  color: white;
+}
+
+.picker-body {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.picker-items {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+  gap: 8px;
+  max-height: 260px;
+  overflow-y: auto;
+}
+
+.picker-item {
+  border: none;
+  background: #f4f4f7;
+  border-radius: 10px;
+  padding: 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  cursor: pointer;
+  font-size: 0.8rem;
+}
+
+.picker-item img {
+  width: 48px;
+  height: 48px;
+  object-fit: contain;
+}
+
+.picker-item.selected {
+  outline: 2px solid #0095ff;
+}
+
+.picker-empty {
+  font-size: 0.85rem;
+  color: #555;
   text-align: center;
 }
 
-.auth-container h2 {
-  font-size: 1.3rem;
+.picker-variant h3 {
+  font-size: 0.9rem;
   margin-bottom: 4px;
 }
 
-.auth-container input,
-.auth-container textarea {
-  padding: 10px;
-  border-radius: 12px;
-  border: 1px solid var(--border-subtle);
-  font-size: 0.95rem;
-  background: var(--bg-card);
-  color: var(--text);
+.variant-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  font-size: 0.85rem;
 }
 
-.auth-container textarea {
-  resize: vertical;
+.picker-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
 }
 
-.auth-container button {
-  padding: 10px;
-  font-size: 0.95rem;
-}
+/* small screens */
 
-.auth-container a {
-  color: var(--accent);
-  text-decoration: none;
-  font-size: 0.9rem;
-}
-.auth-container a:hover {
-  text-decoration: underline;
-}
-
-/* Profile avatar on profile.html (optional) */
-.profile-avatar-preview {
-  width: 64px;
-  height: 64px;
-  border-radius: 999px;
-  margin: 0 auto 8px;
-  background: var(--accent-soft);
-  background-size: cover;
-  background-position: center;
-}
-
-/* ------------------------------
-   MOBILE SUPPORT
---------------------------------*/
 @media (max-width: 700px) {
-  .nav {
-    gap: 8px;
-  }
-
-  .filters {
+  .trade-columns {
     flex-direction: column;
   }
 
-  .pet-grid {
-    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-  }
-
-  .toolbar {
-    display: none; /* hide theme/font on very small screens if cramped */
+  .slot-grid {
+    grid-template-columns: repeat(3, minmax(60px, 1fr));
   }
 }
