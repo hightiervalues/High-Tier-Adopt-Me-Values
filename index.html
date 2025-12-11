@@ -3,223 +3,122 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>High Tier Adopt Me Values</title>
-
-  <!-- Google Fonts for nicer font options -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Poppins:wght@400;600;700&family=Fredoka:wght@400;600&display=swap" rel="stylesheet">
-
+  <title>High Tier Adopt Me Trade Calculator</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 
 <body>
-  <!-- Top Navigation -->
   <header class="topbar">
     <div class="logo">HighTier<span>Values</span></div>
-
     <nav class="nav">
-      <a href="index.html" class="nav-link active">Pets</a>
-      <a href="#trade" class="nav-link">Trade Calc</a>
+      <a href="index.html" class="nav-link active">Trade Calc</a>
+      <a href="signup.html" class="nav-link">Sign Up</a>
+      <a href="login.html" class="nav-link">Log In</a>
       <a href="profile.html" class="nav-link">Profile</a>
-
-      <!-- Theme + Font controls -->
-      <div class="toolbar">
-        <button id="themeToggle" class="icon-button" type="button" title="Toggle light / dark">
-          🌙
-        </button>
-
-        <select id="fontSelect" class="font-select" title="Choose font">
-          <option value="inter">Inter</option>
-          <option value="poppins">Poppins</option>
-          <option value="fredoka">Fredoka</option>
-        </select>
-      </div>
-
-      <!-- When LOGGED OUT -->
-      <div id="authButtons" class="auth-buttons">
-        <a href="signup.html" class="btn-primary">Sign Up</a>
-        <a href="login.html" class="btn-secondary">Log In</a>
-      </div>
-
-      <!-- When LOGGED IN -->
-      <div id="accountArea" class="account-area">
-        <div id="accountAvatar" class="avatar-circle"></div>
-        <div class="account-text">
-          <div id="accountSummary" class="account-summary"></div>
-          <a href="profile.html" class="account-link">View Profile</a>
-        </div>
-        <button id="logoutHeaderBtn" class="btn-secondary btn-small" type="button">
-          Log out
-        </button>
-      </div>
     </nav>
   </header>
 
-  <!-- Main Content -->
-  <main>
-    <section class="filters">
-      <input id="searchInput" type="text" placeholder="Search pets..." class="search-box" />
+  <main class="trade-page">
+    <h1 class="page-title">Adopt Me High Tier Trade Calculator</h1>
 
-      <select id="tierFilter" class="filter-select">
-        <option value="">All Tiers</option>
-      </select>
+    <div class="trade-columns">
+      <!-- Your Offer -->
+      <section class="offer">
+        <h2>Your offer</h2>
+        <div class="slot-grid" data-side="your">
+          <!-- 18 slots -->
+          <div class="offer-slot plus" data-index="0" data-side="your"></div>
+          <div class="offer-slot" data-index="1" data-side="your"></div>
+          <div class="offer-slot" data-index="2" data-side="your"></div>
+          <div class="offer-slot" data-index="3" data-side="your"></div>
+          <div class="offer-slot" data-index="4" data-side="your"></div>
+          <div class="offer-slot" data-index="5" data-side="your"></div>
+          <div class="offer-slot" data-index="6" data-side="your"></div>
+          <div class="offer-slot" data-index="7" data-side="your"></div>
+          <div class="offer-slot" data-index="8" data-side="your"></div>
+          <div class="offer-slot" data-index="9" data-side="your"></div>
+          <div class="offer-slot" data-index="10" data-side="your"></div>
+          <div class="offer-slot" data-index="11" data-side="your"></div>
+          <div class="offer-slot" data-index="12" data-side="your"></div>
+          <div class="offer-slot" data-index="13" data-side="your"></div>
+          <div class="offer-slot" data-index="14" data-side="your"></div>
+          <div class="offer-slot" data-index="15" data-side="your"></div>
+          <div class="offer-slot" data-index="16" data-side="your"></div>
+          <div class="offer-slot" data-index="17" data-side="your"></div>
+        </div>
+      </section>
 
-      <select id="rarityFilter" class="filter-select">
-        <option value="">All Rarities</option>
-      </select>
-    </section>
-
-    <section id="tierTabs" class="tier-tabs"></section>
-
-    <section id="petGrid" class="pet-grid"></section>
-  </main>
-
-  <!-- Modal -->
-  <div id="petModal" class="modal hidden">
-    <div class="modal-content" id="modalContent"></div>
-    <button id="closeModal" class="modal-close">×</button>
-  </div>
-
-  <!-- Trade Calculator -->
-  <section id="trade" class="trade-section">
-    <h2>Trade Calculator</h2>
-
-    <div class="trade-area">
-      <div>
-        <h3>You Give</h3>
-        <div id="giveList" class="trade-list"></div>
-        <button id="clearGive" class="btn-secondary">Clear</button>
-      </div>
-
-      <div>
-        <h3>You Get</h3>
-        <div id="getList" class="trade-list"></div>
-        <button id="clearGet" class="btn-secondary">Clear</button>
-      </div>
+      <!-- Their Offer -->
+      <section class="offer">
+        <h2>Their offer</h2>
+        <div class="slot-grid" data-side="their">
+          <!-- 18 slots -->
+          <div class="offer-slot plus" data-index="0" data-side="their"></div>
+          <div class="offer-slot" data-index="1" data-side="their"></div>
+          <div class="offer-slot" data-index="2" data-side="their"></div>
+          <div class="offer-slot" data-index="3" data-side="their"></div>
+          <div class="offer-slot" data-index="4" data-side="their"></div>
+          <div class="offer-slot" data-index="5" data-side="their"></div>
+          <div class="offer-slot" data-index="6" data-side="their"></div>
+          <div class="offer-slot" data-index="7" data-side="their"></div>
+          <div class="offer-slot" data-index="8" data-side="their"></div>
+          <div class="offer-slot" data-index="9" data-side="their"></div>
+          <div class="offer-slot" data-index="10" data-side="their"></div>
+          <div class="offer-slot" data-index="11" data-side="their"></div>
+          <div class="offer-slot" data-index="12" data-side="their"></div>
+          <div class="offer-slot" data-index="13" data-side="their"></div>
+          <div class="offer-slot" data-index="14" data-side="their"></div>
+          <div class="offer-slot" data-index="15" data-side="their"></div>
+          <div class="offer-slot" data-index="16" data-side="their"></div>
+          <div class="offer-slot" data-index="17" data-side="their"></div>
+        </div>
+      </section>
     </div>
 
-    <button id="evaluateBtn" class="btn-primary">Evaluate Trade</button>
+    <div class="trade-actions">
+      <button id="clearTrade" class="btn-secondary">Clear</button>
+      <button id="evaluateBtn" class="btn-primary">Evaluate Trade</button>
+    </div>
     <p id="tradeResult" class="trade-result"></p>
-  </section>
+  </main>
 
-  <!-- Main app logic -->
-  <script src="app.js"></script>
+  <!-- Picker modal -->
+  <div id="pickerModal" class="modal hidden">
+    <div class="modal-content picker">
+      <div class="picker-header">
+        <h2>Select item</h2>
+        <div class="picker-tabs">
+          <button class="picker-tab active" data-category="pets">Pets</button>
+          <button class="picker-tab" data-category="strollers">Strollers</button>
+          <button class="picker-tab" data-category="food">Food</button>
+          <button class="picker-tab" data-category="pet_wear">Pet wear</button>
+          <button class="picker-tab" data-category="vehicles">Vehicles</button>
+        </div>
+      </div>
 
-  <!-- Theme, font, header auth logic -->
-  <script>
-    (function() {
-      function getCurrentUser() {
-        try {
-          return JSON.parse(localStorage.getItem("currentUser"));
-        } catch (e) {
-          return null;
-        }
-      }
+      <div class="picker-body">
+        <div id="pickerItems" class="picker-items"></div>
 
-      function formatJoinDate(dateIso) {
-        if (!dateIso) return "";
-        const d = new Date(dateIso);
-        if (isNaN(d)) return "";
-        return d.toLocaleDateString(undefined, {
-          year: "numeric",
-          month: "short",
-          day: "numeric"
-        });
-      }
+        <div class="picker-variant">
+          <h3>Variant</h3>
+          <div class="variant-options">
+            <label><input type="radio" name="variant" value="np" checked> No potion</label>
+            <label><input type="radio" name="variant" value="r"> Ride</label>
+            <label><input type="radio" name="variant" value="f"> Fly</label>
+            <label><input type="radio" name="variant" value="fr"> Fly Ride</label>
+            <label><input type="radio" name="variant" value="n"> Neon</label>
+            <label><input type="radio" name="variant" value="m"> Mega</label>
+          </div>
+        </div>
+      </div>
 
-      function firstLetter(name, email) {
-        const source = name || email || "";
-        return source.trim().charAt(0).toUpperCase() || "?";
-      }
+      <div class="picker-footer">
+        <button id="pickerCancel" class="btn-secondary">Cancel</button>
+        <button id="pickerAdd" class="btn-primary">Add to offer</button>
+      </div>
+    </div>
+  </div>
 
-      function applyTheme(theme) {
-        const body = document.body;
-        if (theme === "dark") {
-          body.classList.add("dark-theme");
-        } else {
-          body.classList.remove("dark-theme");
-        }
-        localStorage.setItem("htv_theme", theme);
-      }
-
-      function applyFont(fontKey) {
-        const root = document.documentElement;
-        let stack = '"Inter", system-ui, -apple-system, BlinkMacSystemFont, sans-serif';
-        if (fontKey === "poppins") {
-          stack = '"Poppins", system-ui, -apple-system, BlinkMacSystemFont, sans-serif';
-        } else if (fontKey === "fredoka") {
-          stack = '"Fredoka", system-ui, -apple-system, BlinkMacSystemFont, sans-serif';
-        }
-        root.style.setProperty("--font-main", stack);
-        localStorage.setItem("htv_font", fontKey);
-      }
-
-      document.addEventListener("DOMContentLoaded", function() {
-        const authButtons = document.getElementById("authButtons");
-        const accountArea = document.getElementById("accountArea");
-        const accountSummary = document.getElementById("accountSummary");
-        const logoutBtn = document.getElementById("logoutHeaderBtn");
-        const avatar = document.getElementById("accountAvatar");
-        const themeToggle = document.getElementById("themeToggle");
-        const fontSelect = document.getElementById("fontSelect");
-
-        // Theme init
-        const savedTheme = localStorage.getItem("htv_theme") || "light";
-        applyTheme(savedTheme);
-        if (themeToggle) {
-          themeToggle.textContent = savedTheme === "dark" ? "☀️" : "🌙";
-          themeToggle.addEventListener("click", () => {
-            const current = document.body.classList.contains("dark-theme") ? "dark" : "light";
-            const next = current === "dark" ? "light" : "dark";
-            applyTheme(next);
-            themeToggle.textContent = next === "dark" ? "☀️" : "🌙";
-          });
-        }
-
-        // Font init
-        const savedFont = localStorage.getItem("htv_font") || "inter";
-        applyFont(savedFont);
-        if (fontSelect) {
-          fontSelect.value = savedFont;
-          fontSelect.addEventListener("change", () => {
-            applyFont(fontSelect.value);
-          });
-        }
-
-        // Auth header init
-        const user = getCurrentUser();
-
-        if (user) {
-          authButtons.style.display = "none";
-          accountArea.style.display = "flex";
-
-          const join = formatJoinDate(user.createdAt);
-          const name = user.username || user.email;
-          accountSummary.textContent =
-            join ? `Signed in as ${name} • Joined: ${join}` : `Signed in as ${name}`;
-
-          // Avatar: prefer profile picture if set, else first letter
-          avatar.textContent = "";
-          avatar.style.backgroundImage = "";
-          if (user.avatarDataUrl) {
-            avatar.style.backgroundImage = "url(" + user.avatarDataUrl + ")";
-          } else {
-            avatar.textContent = firstLetter(user.username, user.email);
-          }
-
-          logoutBtn.addEventListener("click", function() {
-            localStorage.removeItem("currentUser");
-            authButtons.style.display = "flex";
-            accountArea.style.display = "none";
-            window.location.href = "index.html";
-          });
-        } else {
-          authButtons.style.display = "flex";
-          accountArea.style.display = "none";
-        }
-      });
-    })();
-  </script>
+  <script src="trade.js"></script>
 </body>
 </html>
