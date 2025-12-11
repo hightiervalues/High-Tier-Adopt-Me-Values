@@ -76,6 +76,51 @@ body {
   margin-bottom: 18px;
 }
 
+/* VALUE STRIP (Shark & Frost) */
+
+.value-strip {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 18px;
+}
+
+.value-box {
+  background: rgba(15, 17, 30, 0.85);
+  border-radius: 999px;
+  padding: 6px 14px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35);
+}
+
+.value-label {
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #f6c453;
+}
+
+.value-numbers {
+  font-size: 0.8rem;
+  color: #e5e7eb;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.value-side-label {
+  font-size: 0.75rem;
+  color: #9ca3af;
+}
+
+.value-separator {
+  color: #4b5563;
+}
+
+/* OFFERS */
+
 .trade-columns {
   display: flex;
   gap: 20px;
